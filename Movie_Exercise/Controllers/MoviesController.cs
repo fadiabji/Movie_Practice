@@ -144,8 +144,11 @@ namespace Movie_Exercise.Controllers
                 return Problem("Entity set 'ApplicationDbContext.Movies'  is null.");
             }
             var movie = await Task.Run(() => _movieservice.GetMovieById(id));
-            if (movie != null)
+            //var movie = _movieservice.GetMovieById(id);
+
+            if (await Task.Run(() => _movieservice.IsExists(id)))
             {
+                //var movie = _movieservice.GetMovieById(id);
                 await Task.Run(() => _movieservice.RemoveMove(movie));
             }
             return RedirectToAction(nameof(Index));

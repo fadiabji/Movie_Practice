@@ -9,7 +9,6 @@ namespace Movie_Exercise.Services
         void AddMovie(Movie newMovie);
         void UpdateMovie(Movie movie);
         void RemoveMove(Movie movie);
-
         bool IsExists(int? id);
 
     }
