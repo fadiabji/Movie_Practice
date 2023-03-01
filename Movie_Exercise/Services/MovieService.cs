@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Movie_Exercise.Data;
+using Movie_Exercise.Models;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
@@ -14,95 +16,43 @@ namespace Movie_Exercise.Services
             _db = db;
         }
 
-
- 
-        //starts when any user click on subscribe button, gives list of subscription typs
-        public async Task<List<SubscriptionType>> GetAllSubscriptiontypeList()
+        // Get all Movies in the data base
+        public async Task<List<Movie>> GetAllMovies()
         {
-            return await Task.Run(() => _db.SubscriptionTypes.ToList());
+            return await Task.Run(() => _db.Movies.ToList());
         }
 
-
-        public List<Subscription> GetAllSubscriptions()
+        //Get Movie By Id
+        public Movie GetMovieById(int? id)
         {
-            return _db.Subscriptions
-                    //.Include(s => s.SubscriptionType)
-                    .ToList();
-        }
-
-
-
-        public Subscription GetSubscriptionById(int? id)
-        {
-            Subscription specificSubscriptionById = _db.Subscriptions
-                //.Include(s => s.SubscriptionType)
+            Movie specificMovieById = _db.Movies
                 .FirstOrDefault(x => x.Id == id);
-            return specificSubscriptionById;
+            return specificMovieById;
         }
 
-
-        public async Task<SubscriptionVM> AddSubscripton(int SubscriptionTypeId, bool paymentComplete)
+        public void AddMovie(Movie newMovie)
         {
-            SubscriptionVM newSub = new SubscriptionVM
-            {
-                PaymentComplete = paymentComplete,
-                Price = _db.SubscriptionTypes.Find(SubscriptionTypeId).Price,
-                UserId = _userService.GetUserId(),
-                SubscriptionTypeId = SubscriptionTypeId,
-                Period = _db.SubscriptionTypes.Find(SubscriptionTypeId).Period,
-                CreatedAt = DateTime.Now
-            };
-
-            return await Task.Run(() => newSub);
-        }
-
-        public async Task<Subscription> SaveSubscripton(SubscriptionVM newSub)
-        {
-            Subscription subscription = new Subscription()
-            {
-                PaymentComplete = newSub.PaymentComplete,
-                Price = newSub.Price,
-                UserId = newSub.UserId,
-                SubscriptionTypeId = newSub.SubscriptionTypeId,
-                Active = true,
-                ExpireAt = newSub.CreatedAt.AddMonths(newSub.Period)
-            };
-
-            _db.Subscriptions.Add(subscription);
+            _db.Add(newMovie);
             _db.SaveChanges();
-            return await Task.Run(() => subscription);
         }
 
-        public void UpdateSubscription(Subscription subscription)
+        public void UpdateMovie(Movie movie)
         {
-            _db.Update(subscription);
+            _db.Update(movie);
             _db.SaveChanges();
         }
 
 
-        public void RemoveSubscription(int id)
+        public void RemoveMove(Movie movie)
         {
-            _db.Subscriptions.Remove(GetSubscriptionById(id));
+            _db.Remove(movie);
             _db.SaveChanges();
         }
 
-        //give me subscription for specific  user - use it in _loginPartial
-        public Subscription GetActiveSubscription(ClaimsPrincipal claimsPrincipal)
+        public bool IsExists(int? id)
         {
-            var userId = _userManager.GetUserId(claimsPrincipal);
-            var sub = _userService.GetUserSubscriptions(userId);
-            var activeSub = sub.FirstOrDefault(s => s.Active);
-            return activeSub;
+            return _db.Movies.Any(e => e.Id == id);
         }
-
-        //has user have an active subscripion - use it in _loginPartial
-        public bool HasSubscription(ClaimsPrincipal claimsPrincipal)
-        {
-            return GetActiveSubscription(claimsPrincipal) != null;
-        }
-
-
-
 
     }
 }
