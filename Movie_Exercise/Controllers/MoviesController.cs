@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,34 +8,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Movie_Exercise.Data;
 using Movie_Exercise.Models;
+using Movie_Exercise.Services;
 
 namespace Movie_Exercise.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IMovieService _movieservice;
 
-        public MoviesController(ApplicationDbContext context)
+        public MoviesController(IMovieService movieService)
         {
-            _context = context;
+            _movieservice = movieService;
         }
 
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Movies.ToListAsync());
+              return View(await Task.Run(()=> _movieservice.GetAllMovies()));
         }
 
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Movies == null)
+            if (id == null || _movieservice.GetAllMovies() == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movie = await Task.Run(()=>_movieservice.GetMovieById(id));
             if (movie == null)
             {
                 return NotFound();
@@ -54,12 +55,11 @@ namespace Movie_Exercise.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Director,ReleaseYear,Price")] Movie movie)
+        public async Task<IActionResult> Create(Movie movie)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
+                await Task.Run(() => _movieservice.AddMovie(movie));
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
@@ -68,12 +68,14 @@ namespace Movie_Exercise.Controllers
         // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Movies == null)
+            if (id == null || _movieservice.GetAllMovies() == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies.FindAsync(id);
+            //var movie = await _context.Movies.FindAsync(id);
+            var movie = await Task.Run(()=> _movieservice.GetMovieById(id));
+
             if (movie == null)
             {
                 return NotFound();
@@ -86,7 +88,7 @@ namespace Movie_Exercise.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Director,ReleaseYear,Price")] Movie movie)
+        public async Task<IActionResult> Edit(int id, Movie movie)
         {
             if (id != movie.Id)
             {
@@ -97,8 +99,7 @@ namespace Movie_Exercise.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
+                    await Task.Run(() => _movieservice.UpdateMovie(movie));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,13 +120,12 @@ namespace Movie_Exercise.Controllers
         // GET: Movies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Movies == null)
+            if (id == null || _movieservice.GetAllMovies() == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movie = await Task.Run(() => _movieservice.GetMovieById(id));
             if (movie == null)
             {
                 return NotFound();
@@ -139,23 +139,21 @@ namespace Movie_Exercise.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Movies == null)
+            if (_movieservice.GetAllMovies() == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Movies'  is null.");
             }
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await Task.Run(() => _movieservice.GetMovieById(id));
             if (movie != null)
             {
-                _context.Movies.Remove(movie);
+                await Task.Run(() => _movieservice.RemoveMove(movie));
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-          return _context.Movies.Any(e => e.Id == id);
+          return _movieservice.IsExists(id);
         }
     }
 }
