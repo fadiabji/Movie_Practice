@@ -4,8 +4,12 @@ namespace Movie_Exercise.Models
 {
     public class Order
     {
-        [Required]   
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        [Display(Name = "Order Date")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
+
         [Required]
         public int CustomerId { get; set; }
 

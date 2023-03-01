@@ -14,7 +14,9 @@ namespace Movie_Exercise.Models
         [Required]
         public string Director { get; set; }
         [Required]
+        [Display(Name = "Release Years")]
         public int ReleaseYear { get; set; }
+        
         [Required]
         public int Price { get; set; }
 
