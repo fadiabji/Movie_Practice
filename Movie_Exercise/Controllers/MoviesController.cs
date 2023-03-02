@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
 using Movie_Exercise.Data;
 using Movie_Exercise.Models;
@@ -55,10 +56,16 @@ namespace Movie_Exercise.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Movie movie)
+        public async Task<IActionResult> Create(IFormFile file, Movie movie)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && file != null)
             {
+                string fileName = file.FileName;
+                string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images"));
+                using( var filestream = new FileStream(Path.Combine(path, fileName),FileMode.Create))
+                { await file.CopyToAsync(filestream); }
+                movie.ImageFile = fileName;
+
                 await Task.Run(() => _movieservice.AddMovie(movie));
                 return RedirectToAction(nameof(Index));
             }
@@ -88,17 +95,23 @@ namespace Movie_Exercise.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Movie movie)
+        public async Task<IActionResult> Edit(int id, Movie movie, IFormFile file)
         {
             if (id != movie.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && file != null)
             {
                 try
                 {
+                    string fileName = file.FileName;
+                    string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images"));
+                    using (var filestream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                    { await file.CopyToAsync(filestream); }
+                    movie.ImageFile = fileName;
+
                     await Task.Run(() => _movieservice.UpdateMovie(movie));
                 }
                 catch (DbUpdateConcurrencyException)
