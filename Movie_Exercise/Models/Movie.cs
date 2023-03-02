@@ -20,5 +20,8 @@ namespace Movie_Exercise.Models
         [Required]
         public int Price { get; set; }
 
+        [Display(Name ="Image File")]
+        public string ImageFile { get; set; }
+
     }
 }
