@@ -36,9 +36,10 @@ namespace Movie_Exercise.Models
         [Display(Name = "Email Address")]
         [EmailAddress]
         public string EmailAddress { get; set; }
-        [Required]
         [Display(Name = "Phone Number")]
-        [Phone]
+        [Required(ErrorMessage = "You must provide a phone number")]
+        [DataType(DataType.PhoneNumber)]
+        //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number ex 8005551212")]
         public int PhoneNumber { get; set; }   
 
         public virtual ICollection<Order> Orders { get; set; }

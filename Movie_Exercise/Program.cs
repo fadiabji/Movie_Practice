@@ -17,6 +17,8 @@ builder.Services.AddControllersWithViews();
 
 // Adding Services Here
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
 
 
 var app = builder.Build();
