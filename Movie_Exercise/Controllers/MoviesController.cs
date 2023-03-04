@@ -28,6 +28,13 @@ namespace Movie_Exercise.Controllers
               return View(await Task.Run(()=> _movieservice.GetAllMovies()));
         }
 
+
+        // GET: Movies
+        public async Task<IActionResult> Gallery()
+        {
+            return View(await Task.Run(() => _movieservice.GetAllMovies()));
+        }
+
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {

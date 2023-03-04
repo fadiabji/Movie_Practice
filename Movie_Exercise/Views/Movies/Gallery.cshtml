@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Movie_Exercise.Models.Movie>
+
+@{
+    ViewData["Title"] = "Gallery";
+}
+
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <partial name="_MoviesCards" model="item"></partial>
+    }
+</div>
