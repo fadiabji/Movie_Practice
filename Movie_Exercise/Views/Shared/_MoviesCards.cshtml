@@ -8,15 +8,15 @@
             <p class="card-text">@Model.Description</p>
         </div>
         <ul class="list-group list-group-flush ">
-            <li class="list-group-item bg-white">Cras justo odio</li>
-            <li class="list-group-item bg-white">Dapibus ac facilisis in</li>
-            <li class="list-group-item bg-danger">Vestibulum at eros</li>
+            <li class="list-group-item bg-white">@Model.Director</li>
+            <li class="list-group-item bg-white">@Model.ReleaseYear</li>
+            <li class="list-group-item bg-danger">@Model.Price</li>
         </ul>
         <div class="card-body">
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
+            <button type="submit" onclick="addToCart('@Model.Id')" class="btn btn-primary">Add To Cart</button>
+            @*<a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>*@
         </div>
     </div>
 </div>
-
 

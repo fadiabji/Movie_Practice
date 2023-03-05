@@ -22,3 +22,16 @@ body {
     height: 40vw;
     object-fit: cover;
 }
+
+.cart-img {
+    width: 40px;
+    height: 60px;
+}
+
+.cart-item {
+    margin: auto;
+}
+
+.table td {
+    margin: auto;
+}
