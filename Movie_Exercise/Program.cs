@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Movie_Exercise.Data;
 using Movie_Exercise.Services;
 
@@ -18,15 +19,17 @@ builder.Services.AddControllersWithViews();
 // Adding sessions 
 builder.Services.AddDistributedMemoryCache();
 
+
+
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
 // Adding Services Here
-builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 

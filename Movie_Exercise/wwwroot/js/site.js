@@ -25,3 +25,36 @@ function addToCart(movieId) {
         }
     })
 }
+
+
+
+function Increment(movieId) {
+    //event.preventDefault();
+    var requestUrl = "/Cart/IncrementCartItem/movieId";
+    $.ajax({
+        type: "POST",
+        url: requestUrl,
+        dataType: "json",
+        cach: false,
+        data: { id: movieId },
+        success: function (data) {
+            $('#Quantaty').html(data.length);
+        }
+    })
+}
+
+
+function Decrement(movieId) {
+    //event.preventDefault();
+    var requestUrl = "/Cart/DecrementCartItem/movieId";
+    $.ajax({
+        type: "POST",
+        url: requestUrl,
+        dataType: "json",
+        cach: false,
+        data: { id: movieId },
+        success: function (data) {
+            $('#Quantaty').html(data.length);
+        }
+    })
+}

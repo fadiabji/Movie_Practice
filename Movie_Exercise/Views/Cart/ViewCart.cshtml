@@ -10,13 +10,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.MovieTitle)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.MovieId)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
@@ -30,23 +30,22 @@
 @foreach (var item in Model) {
         <tr class="cart-item">
             <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.MovieTitle)
             </td>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.MovieId)
+            </td>*@
+            <td>
+                    <button onclick="Increment(@item.Id)">+</button>
+                    <span id="Quantaty"> @*@Html.DisplayFor(modelItem => item.Quantity)*@ </span>
+                    <button onclick="Decrement(@item.Id)">-</button>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                    <img src="~/Images/@item.ImgFile" class="cart-img">
-                    @*<img src="~/images/@item.ImgFile" style="width: 60px; heigh:40px" />*@
-                @*@Html.DisplayFor(modelItem => item.ImgFile)*@
+                <img src="~/Images/@item.ImgFile" class="cart-img">
             </td>
-
         </tr>
 }
     </tbody>
