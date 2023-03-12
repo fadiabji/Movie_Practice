@@ -35,3 +35,12 @@ body {
 .table td {
     margin: auto;
 }
+
+main{
+    margin-top: 75px;
+    margin-bottom: 50px;
+}
+
+.card-div {
+    margin-bottom: 20px;
+}

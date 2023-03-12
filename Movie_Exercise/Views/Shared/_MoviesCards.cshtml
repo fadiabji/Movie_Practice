@@ -1,6 +1,6 @@
 ﻿@model Movie_Exercise.Models.Movie
 
-<div class="col-sm-4">
+<div class="card-div col-sm-4" >
     <div class="card text-center" style="width: 18rem;">
         <img src="~/Images/@Model.ImageFile" class="card-img-top" alt="...">
         <div class="card-body">
@@ -14,9 +14,6 @@
         </ul>
         <div class="card-body">
             <button type="submit" onclick="addToCart('@Model.Id')" class="btn btn-primary">Add To Cart</button>
-            @*<a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>*@
         </div>
     </div>
 </div>
-
