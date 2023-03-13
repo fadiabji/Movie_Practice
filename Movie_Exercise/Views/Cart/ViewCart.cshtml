@@ -1,4 +1,10 @@
-﻿@model IEnumerable<Movie_Exercise.Models.ViewModels.CartItemVM>
+﻿@using Movie_Exercise.SessionHelpers;
+@using Movie_Exercise.Models;
+@using Movie_Exercise.Controllers;
+@inject IHttpContextAccessor httpContext;
+
+
+@model IEnumerable<Movie_Exercise.Models.ViewModels.CartItemVM>
 
 @{
     ViewData["Title"] = "ViewCart";
@@ -32,13 +38,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.MovieTitle)
             </td>
-           @* <td>
-                @Html.DisplayFor(modelItem => item.MovieId)
-            </td>*@
             <td>
-                    <button onclick="Increment(@item.Id)">+</button>
-                    <span id="Quantaty"> @*@Html.DisplayFor(modelItem => item.Quantity)*@ </span>
-                    <button onclick="Decrement(@item.Id)">-</button>
+                <button type="button" onclick="Increment(@item.Id)">+</button>
+
+                    <span id="Quantaty"></span>
+                
+                <button type="button" onclick="Decrement(@item.Id)">-</button>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
@@ -50,3 +55,73 @@
 }
     </tbody>
 </table>
+
+
+
+@section Scripts {
+    <script>
+        //function Increment(movieId) {
+        //    //event.preventDefault();
+        //    var requestUrl = "/Cart/IncrementCartItem/";
+        //    $.ajax({
+        //        type: "POST",
+        //        url: requestUrl,
+        //        dataType: "json",
+        //        cach: false,
+        //        data: { Id: movieId },
+        //        success: function (data) {
+        //            // alert(JSON.stringify(data)); show entire object in JSON format
+        //            $.each(data, function (i, obj) {
+        //                ('#Quantaty').html(JSON.stringify(data.value));
+        //            })
+        //        },
+        //    })
+        //}
+
+         function Increment(movieId) {
+            //event.preventDefault();
+            var requestUrl = "/Cart/IncrementCartItem/";
+            $.ajax({
+                type: "POST",
+                url: requestUrl,
+                dataType: "json",
+                cach: false,
+                data: { Id: movieId },
+                 success: function (data) {
+                    // alert(JSON.stringify(data)); show entire object in JSON format
+                    // Use a regular for-loop
+                        for (let i = 0; i < data.length; i++) { 
+                        $.each(data, function(i, obj){
+                            
+                            $('#Quantaty+').html(JSON.stringify(data.value));
+                        })
+                        }
+                    
+                },
+            })
+        }
+
+
+        function Decrement(movieId) {
+            //event.preventDefault();
+            var requestUrl = "/Cart/DecrementCartItem/";
+            $.ajax({
+                type: "POST",
+                url: requestUrl,
+                dataType: "json",
+                cach: false,
+                data: { Id: movieId },
+                success: function (data) {
+                    // alert(JSON.stringify(data)); show entire object in JSON format
+                    
+                        $.each(data, function(i, obj){
+                            $('#Quantaty+').html(JSON.stringify(data.value));
+                        })
+                    
+                },
+            })
+        }
+
+
+    </script>
+}

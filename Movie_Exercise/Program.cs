@@ -31,6 +31,8 @@ builder.Services.AddSession(options =>
 // Adding Services Here
 builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 
 

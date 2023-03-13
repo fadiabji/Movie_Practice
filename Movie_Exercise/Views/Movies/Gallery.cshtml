@@ -12,3 +12,28 @@
         <partial name="_MoviesCards" model="item"></partial>
     }
 </div>
+
+
+
+@section Scripts {
+    <script>
+        function addToCart(movieId) {
+            event.preventDefault();
+            var requestUrl = "/Cart/AddToCart/movieId";
+            $.ajax({
+                type: "POST",
+                url: requestUrl,
+                dataType: "json",
+                cach: false,
+                data: { id: movieId },
+                success: function (data) {
+                    var newData = data.value;
+                    var x = newData.length;
+                    $('#shopcount').html(x);
+                }
+            })
+        }
+
+
+    </script>
+}

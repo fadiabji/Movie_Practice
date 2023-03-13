@@ -23,6 +23,8 @@ namespace Movie_Exercise.Controllers
         {
             return View();
         }
+
+
         [HttpPost]
         public IActionResult AddToCart(int id)
         {
@@ -43,6 +45,7 @@ namespace Movie_Exercise.Controllers
             }
             return Json(new { Value = HttpContext.Session.Get<List<Movie>>(SessionKeyCart).ToList() });
         }
+
         
 
         public IActionResult ViewCart()
@@ -95,6 +98,7 @@ namespace Movie_Exercise.Controllers
             var quantity = ItemsVMList.Where(m => m.Id == Id).Select(m => m.Quantity).FirstOrDefault();
 
             return Json(new { Value = quantity });
+
             //return RedirectToAction("ViewCart");
         }
 
@@ -105,7 +109,23 @@ namespace Movie_Exercise.Controllers
                 movieList.Remove(newMovie);
                 HttpContext.Session.Remove(SessionKeyCart);
                 HttpContext.Session.Set<List<Movie>>(SessionKeyCart, movieList);
-                return RedirectToAction("ViewCart");
+                //return RedirectToAction("ViewCart");
+            var ItemsVMList = from m in movieList
+                              group m by m.Id into g
+                              orderby g.Key
+                              select new CartItemVM
+                              {
+                                  Id = g.Key,
+                                  MovieId = g.Select(m => m.Id).FirstOrDefault(),
+                                  MovieTitle = g.Select(m => m.Title).FirstOrDefault(),
+                                  Price = g.Select(m => m.Price).FirstOrDefault(),
+                                  Quantity = g.Count(),
+                                  ImgFile = g.Select(m => m.ImageFile).FirstOrDefault()
+                              };
+            var quantity = ItemsVMList.Where(m => m.Id == Id).Select(m => m.Quantity).FirstOrDefault();
+
+            return Json(new { Value = quantity });
+
         }
     }
 }
