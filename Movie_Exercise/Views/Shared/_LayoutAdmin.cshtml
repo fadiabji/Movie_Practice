@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Admin</a></li>
+                <li><a href="/about">about</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main role="main" class="container">
+        @RenderBody()
+    </main>
+    <footer>
+        &copy; My Site 2023
+    </footer>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+
