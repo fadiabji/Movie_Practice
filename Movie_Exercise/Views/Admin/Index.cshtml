@@ -1,9 +1,11 @@
-﻿
-
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewData["Title"] = "Admin";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<h1 class="bg-info text-white">Admin Page</h1>
 
-<h1>Admin Page</h1>
+<h3>
+    <br /><a class="LinkLine" asp-area="" asp-controller="Roles" asp-action="Index">Roles Manager</a><br />
+
+</h3>
