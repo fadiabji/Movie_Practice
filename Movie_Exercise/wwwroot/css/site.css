@@ -34,6 +34,12 @@ body {
 
 .table td {
     margin: auto;
+    text-align: center;
+}
+
+.table tr {
+    margin: auto;
+    text-align: center;
 }
 
 main{
