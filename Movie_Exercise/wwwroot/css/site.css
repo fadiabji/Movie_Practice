@@ -71,10 +71,12 @@ svg{
     margin-right:5px;  
 }
 
-/*checkout form*/
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
 
+    /*checkout form*/
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
+    /*
 *, body {
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
@@ -88,9 +90,9 @@ html, body {
     background-color: #152733;
     overflow: hidden;
 }
+*/
 
-
-.form-holder {
+    .form-holder {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -99,19 +101,19 @@ html, body {
     min-height: 100vh;
 }
 
-    .form-holder .form-content {
-        position: relative;
-        text-align: center;
-        display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-align-items: center;
-        align-items: center;
-        padding: 60px;
+.form-holder .form-content {
+    position: relative;
+    text-align: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 60px;
     }
 
 .form-content .form-items {
@@ -136,8 +138,8 @@ html, body {
     margin-bottom: 5px;
 }
 
-    .form-content h3.form-title {
-        margin-bottom: 30px;
+.form-content h3.form-title {
+    margin-bottom: 30px;
     }
 
 .form-content p {
@@ -178,11 +180,11 @@ html, body {
     box-shadow: none;
 }
 
-    .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-        background-color: #495056;
-        outline: none !important;
-        border: none !important;
-        box-shadow: none;
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: #495056;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none;
     }
 
 .form-content textarea {
@@ -204,10 +206,10 @@ html, body {
     margin-bottom: 14px;
 }
 
-    .form-content textarea:hover, .form-content textarea:focus {
-        border: 0;
-        background-color: #ebeff8;
-        color: #8D8D8D;
+.form-content textarea:hover, .form-content textarea:focus {
+    border: 0;
+    background-color: #ebeff8;
+    color: #8D8D8D;
     }
 
 .mv-up {

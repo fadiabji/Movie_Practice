@@ -12,9 +12,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.MovieTitle)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.MovieId)
-            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
@@ -36,11 +33,10 @@
                 @Html.DisplayFor(modelItem => item.MovieTitle)
             </td>
             <td>
-                    <button type="button" onclick="Increment(@item.Id)">+</button>
-
-                    <span id='@item.Id'>@item.Quantity</span>
-                
-                    <button type="button" onclick="Decrement(@item.Id)">-</button>
+                    <button class="button-plus border rounded-circle icon-shape icon-sm" type="button" onclick="Increment(@item.Id)">+</button>
+                    <input id='@item.Id' type="number" step="1" max="10" value="@item.Quantity" name="quantity" class="quantity-field border-0 text-center w-25">
+                    
+                    <button class="button-plus border rounded-circle icon-shape icon-sm" type="button" onclick="Decrement(@item.Id)">-</button>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
@@ -67,12 +63,8 @@
 
 
 
-@*<form id="checkout-form" style="display:none;">
-    <!-- Your form fields here -->
-    
-</form>*@
-
-<div class="form-body">
+@*form comes after checkout button clicked
+*@<div class="form-body" id="checkout-form" style="display:none;">
     <div class="row">
         <div class="form-holder">
             <div class="form-content">
@@ -80,62 +72,54 @@
                     <h3>Register Today</h3>
                     <p>Fill in the data below.</p>
                     <form class="requires-validation" novalidate>
-
                         <div class="col-md-12">
-                            <input class="form-control" type="text" name="name" placeholder="Full Name" required>
-                            <div class="valid-feedback">Username field is valid!</div>
-                            <div class="invalid-feedback">Username field cannot be blank!</div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <input class="form-control" type="email" name="email" placeholder="E-mail Address" required>
+                            <input class="form-control" type="email" name="Email" placeholder="E-mail Address" required>
                             <div class="valid-feedback">Email field is valid!</div>
                             <div class="invalid-feedback">Email field cannot be blank!</div>
                         </div>
 
                         <div class="col-md-12">
-                            <select class="form-select mt-3" required>
-                                <option selected disabled value="">Position</option>
-                                <option value="jweb">Junior Web Developer</option>
-                                <option value="sweb">Senior Web Developer</option>
-                                <option value="pmanager">Project Manager</option>
-                            </select>
-                            <div class="valid-feedback">You selected a position!</div>
-                            <div class="invalid-feedback">Please select a position!</div>
+                            <input class="form-control" type="text" name="BillingAddress" placeholder="Billing Address" required>
+                            <div class="valid-feedback">Billing Address field is valid!</div>
+                            <div class="invalid-feedback">Billing Address field cannot be blank!</div>
                         </div>
-
+                        <br />
+                        <div class="col-md-12">
+                            <input class="form-control" type="number" name="BillingZip" placeholder="Billing Zip" required>
+                            <div class="valid-feedback">Billing Zip field is valid!</div>
+                            <div class="invalid-feedback">Billing Zip field cannot be blank!</div>
+                        </div>
 
                         <div class="col-md-12">
-                            <input class="form-control" type="password" name="password" placeholder="Password" required>
-                            <div class="valid-feedback">Password field is valid!</div>
-                            <div class="invalid-feedback">Password field cannot be blank!</div>
+                            <input class="form-control" type="text" name="BillingCity" placeholder="Billing City" required>
+                            <div class="valid-feedback">Billing City field is valid!</div>
+                            <div class="invalid-feedback">Billing City field cannot be blank!</div>
                         </div>
-
-
-                        <div class="col-md-12 mt-3">
-                            <label class="mb-3 mr-1" for="gender">Gender: </label>
-
-                            <input type="radio" class="btn-check" name="gender" id="male" autocomplete="off" required>
-                            <label class="btn btn-sm btn-outline-secondary" for="male">Male</label>
-
-                            <input type="radio" class="btn-check" name="gender" id="female" autocomplete="off" required>
-                            <label class="btn btn-sm btn-outline-secondary" for="female">Female</label>
-
-                            <input type="radio" class="btn-check" name="gender" id="secret" autocomplete="off" required>
-                            <label class="btn btn-sm btn-outline-secondary" for="secret">Secret</label>
-                            <div class="valid-feedback mv-up">You selected a gender!</div>
-                            <div class="invalid-feedback mv-up">Please select a gender!</div>
+                        
+                        <div class="col-md-12">
+                            <input class="form-control" type="text" name="DeliveryAddress" placeholder="Delivery Address" required>
+                            <div class="valid-feedback">Delivery Address field is valid!</div>
+                            <div class="invalid-feedback">Delivery Address field cannot be blank!</div>
                         </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                            <label class="form-check-label">I confirm that all data are correct</label>
-                            <div class="invalid-feedback">Please confirm that the entered data are all correct!</div>
+                        <br />
+                        <div class="col-md-12">
+                            <input class="form-control" type="number" name="DeliveryZip" placeholder="Delivery Zip" required>
+                            <div class="valid-feedback">Delivery Zip field is valid!</div>
+                            <div class="invalid-feedback">Delivery Zip field cannot be blank!</div>
                         </div>
-
-
+                        <div class="col-md-12">
+                            <input class="form-control" type="text" name="DeliveryCity" placeholder="Delivery City" required>
+                            <div class="valid-feedback">Delivery City field is valid!</div>
+                            <div class="invalid-feedback">Delivery City field cannot be blank!</div>
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <input class="form-control" type="tel" name="PhoneNumber" placeholder="Phone Number" required>
+                            <div class="valid-feedback">Phone Number field is valid!</div>
+                            <div class="invalid-feedback">Phone Number field cannot be blank!</div>
+                        </div>
                         <div class="form-button mt-3">
-                            <button id="submit" type="submit" class="btn btn-primary">Register</button>
+                            <button id="submit" type="submit" class="btn btn-primary">Continue</button>
                         </div>
                     </form>
                 </div>
@@ -145,16 +129,7 @@
 </div>
 
 
-<script>
-    function toggleForm() {
-        const form = document.getElementById("checkout-form");
-        if (form.style.display === "none") {
-            form.style.display = "block";
-        } else {
-            form.style.display = "none";
-        }
-    }
-</script>
+
 
 
 
@@ -210,5 +185,6 @@
                 form.style.display = "none";
             }
         }
+
     </script>
 }

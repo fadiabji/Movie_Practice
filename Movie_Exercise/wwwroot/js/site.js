@@ -1,5 +1,5 @@
 ﻿
-// give the cart element color when it has a value.
+// give a red circule around around the amount number that cart has.
 const element = document.getElementById("shopcount");
 console.log(element.Value)
 // Check if the element has a value
@@ -14,7 +14,7 @@ if (element) {
     element.style.fontSize = "14px";
 }
 
-// check out
+// check out form
 
 (function () {
     'use strict'

@@ -4,6 +4,7 @@ using Movie_Exercise.Models;
 using Movie_Exercise.Models.ViewModels;
 using Movie_Exercise.Services;
 using Movie_Exercise.SessionHelpers;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Movie_Exercise.Controllers
@@ -127,5 +128,16 @@ namespace Movie_Exercise.Controllers
             return Json(new { Value = quantity });
 
         }
+
+
+        public IActionResult Checkout(CheckOutCustomerVM obj)
+        {
+            return View();
+        }
+
+
+        
+
+        
     }
 }
