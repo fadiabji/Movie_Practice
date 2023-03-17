@@ -13,7 +13,18 @@
             <li class="list-group-item bg-danger">@Model.Price</li>
         </ul>
         <div class="card-body">
-            <button type="submit" onclick="addToCart('@Model.Id')" class="btn btn-primary">Add To Cart</button>
+            
+                <div class="row">
+                    <div class="input-group w-auto justify-content-end align-items-center">
+                        <input type="button" value="-" class="button-minus border rounded-circle  icon-shape icon-sm mx-1 " data-field="quantity">
+                        <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field border-0 text-center w-25">
+                        <input type="button" value="+" class="button-plus border rounded-circle icon-shape icon-sm " data-field="quantity">
+                    </div>
+                </div>
+                <div calss="row">
+                        <button type="submit" onclick="addToCart('@Model.Id')" class="btn btn-primary">Add To Cart</button>
+                </div>
+            
         </div>
     </div>
 </div>

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing.Constraints;
@@ -23,6 +25,7 @@ namespace Movie_Exercise.Controllers
         }
 
         // GET: Movies
+        [Authorize(Roles = ("Admin"))]
         public async Task<IActionResult> Index()
         {
               return View(await Task.Run(()=> _movieservice.GetAllMovies()));
@@ -36,6 +39,7 @@ namespace Movie_Exercise.Controllers
         }
 
         // GET: Movies/Details/5
+        [Authorize(Roles = ("Admin"))]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _movieservice.GetAllMovies() == null)
@@ -53,6 +57,7 @@ namespace Movie_Exercise.Controllers
         }
 
         // GET: Movies/Create
+        [Authorize(Roles = ("Admin"))]
         public IActionResult Create()
         {
             return View();
@@ -63,6 +68,7 @@ namespace Movie_Exercise.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Admin"))]
         public async Task<IActionResult> Create(IFormFile file, Movie movie)
         {
             if (ModelState.IsValid && file != null)
@@ -80,6 +86,7 @@ namespace Movie_Exercise.Controllers
         }
 
         // GET: Movies/Edit/5
+        [Authorize(Roles = ("Admin"))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _movieservice.GetAllMovies() == null)
@@ -102,6 +109,7 @@ namespace Movie_Exercise.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = ("Admin"))]
         public async Task<IActionResult> Edit(int id, Movie movie, IFormFile file)
         {
             if (id != movie.Id)
@@ -138,6 +146,7 @@ namespace Movie_Exercise.Controllers
         }
 
         // GET: Movies/Delete/5
+        [Authorize(Roles = ("Admin"))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _movieservice.GetAllMovies() == null)
@@ -155,6 +164,7 @@ namespace Movie_Exercise.Controllers
         }
 
         // POST: Movies/Delete/5
+        [Authorize(Roles = ("Admin"))]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

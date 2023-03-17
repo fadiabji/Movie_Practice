@@ -1,15 +1,7 @@
-﻿@using Movie_Exercise.SessionHelpers;
-@using Movie_Exercise.Models;
-@using Movie_Exercise.Controllers;
-@inject IHttpContextAccessor httpContext;
-
-
-@model IEnumerable<Movie_Exercise.Models.ViewModels.CartItemVM>
-
+﻿@model IEnumerable<Movie_Exercise.Models.ViewModels.CartItemVM>
 
 @{
     ViewData["Title"] = "ViewCart";
-
 }
 
 <h1>List of Items</h1>
@@ -20,9 +12,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.MovieTitle)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.MovieId)
-            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
@@ -44,11 +33,10 @@
                 @Html.DisplayFor(modelItem => item.MovieTitle)
             </td>
             <td>
-                    <button type="button" onclick="Increment(@item.Id)">+</button>
-
-                    <span id='@item.Id'>@item.Quantity</span>
-                
-                    <button type="button" onclick="Decrement(@item.Id)">-</button>
+                    <button class="button-plus border rounded-circle icon-shape icon-sm" type="button" onclick="Increment(@item.Id)">+</button>
+                    <input id='@item.Id' type="number" step="1" max="10" value="@item.Quantity" name="quantity" class="quantity-field border-0 text-center w-25">
+                    
+                    <button class="button-plus border rounded-circle icon-shape icon-sm" type="button" onclick="Decrement(@item.Id)">-</button>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
@@ -63,12 +51,90 @@
 }
     </tbody>
 </table>
+<div class="row">
+    <div class="col-md-6"> 
+        <button onclick="toggleForm()">Checkout</button>
+    </div>
+    <div class="col-md-5">
+        <p>Total Price: @Model.Sum(i => i.CartItemTotal())</p>
+        <p>Items: @Model.Sum(i => i.Quantity) </p>
+    </div>
+</div>
+
+
+
+@*form comes after checkout button clicked
+*@<div class="form-body" id="checkout-form" style="display:none;">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h3>Register Today</h3>
+                    <p>Fill in the data below.</p>
+                    <form class="requires-validation" novalidate>
+                        <div class="col-md-12">
+                            <input class="form-control" type="email" name="Email" placeholder="E-mail Address" required>
+                            <div class="valid-feedback">Email field is valid!</div>
+                            <div class="invalid-feedback">Email field cannot be blank!</div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <input class="form-control" type="text" name="BillingAddress" placeholder="Billing Address" required>
+                            <div class="valid-feedback">Billing Address field is valid!</div>
+                            <div class="invalid-feedback">Billing Address field cannot be blank!</div>
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <input class="form-control" type="number" name="BillingZip" placeholder="Billing Zip" required>
+                            <div class="valid-feedback">Billing Zip field is valid!</div>
+                            <div class="invalid-feedback">Billing Zip field cannot be blank!</div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <input class="form-control" type="text" name="BillingCity" placeholder="Billing City" required>
+                            <div class="valid-feedback">Billing City field is valid!</div>
+                            <div class="invalid-feedback">Billing City field cannot be blank!</div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <input class="form-control" type="text" name="DeliveryAddress" placeholder="Delivery Address" required>
+                            <div class="valid-feedback">Delivery Address field is valid!</div>
+                            <div class="invalid-feedback">Delivery Address field cannot be blank!</div>
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <input class="form-control" type="number" name="DeliveryZip" placeholder="Delivery Zip" required>
+                            <div class="valid-feedback">Delivery Zip field is valid!</div>
+                            <div class="invalid-feedback">Delivery Zip field cannot be blank!</div>
+                        </div>
+                        <div class="col-md-12">
+                            <input class="form-control" type="text" name="DeliveryCity" placeholder="Delivery City" required>
+                            <div class="valid-feedback">Delivery City field is valid!</div>
+                            <div class="invalid-feedback">Delivery City field cannot be blank!</div>
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <input class="form-control" type="tel" name="PhoneNumber" placeholder="Phone Number" required>
+                            <div class="valid-feedback">Phone Number field is valid!</div>
+                            <div class="invalid-feedback">Phone Number field cannot be blank!</div>
+                        </div>
+                        <div class="form-button mt-3">
+                            <button id="submit" type="submit" class="btn btn-primary">Continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 
 
 @section Scripts {
     <script>
-        
          function Increment(movieId) {
             var requestUrl = "/Cart/IncrementCartItem/";
             $.ajax({
@@ -79,17 +145,18 @@
                 data: { Id: movieId },
                 success: function (data) {
                     // alert(JSON.stringify(data)); show entire object in JSON format
-
                     $.each(data, function (i, obj) {
                         $('#' + movieId).html(JSON.stringify(data.value));
                     })
                     // to make the page reload: location.reload();
+                    location.reload();
                 },
             })
         }
 
 
         function Decrement(movieId) {
+            
             var requestUrl = "/Cart/DecrementCartItem/";
             $.ajax({
                 type: "POST",
@@ -99,16 +166,25 @@
                 data: { Id: movieId },
                 success: function (data) {
                     // alert(JSON.stringify(data)); show entire object in JSON format
-                    
                         $.each(data, function(i, obj){
                             $('#'+movieId).html(JSON.stringify(data.value));
                         })
                         // to make the page reload: location.reload();
-                    
+                    location.reload();
                 },
             })
         }
 
+
+        // toget button to check out form
+        function toggleForm() {
+            const form = document.getElementById("checkout-form");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
 
     </script>
 }

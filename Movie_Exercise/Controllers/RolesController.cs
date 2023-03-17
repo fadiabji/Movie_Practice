@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Movie_Exercise.Models;
+using System.Data;
 
 namespace Movie_Exercise.Controllers
 {
+    [Authorize(Roles = ("Admin"))]
     public class RolesController : Controller
     {
         private RoleManager<IdentityRole> roleManager;
