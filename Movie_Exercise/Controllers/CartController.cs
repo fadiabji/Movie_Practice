@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Movie_Exercise.Data;
 using Movie_Exercise.Models;
 using Movie_Exercise.Models.ViewModels;
@@ -15,8 +18,13 @@ namespace Movie_Exercise.Controllers
         public readonly IMovieService _movieService;
         public readonly ApplicationDbContext _db;
         const string SessionKeyCart = "ShoppingCart";
-        public CartController( IMovieService movieService, ApplicationDbContext db)
+
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        public CartController( IMovieService movieService, ApplicationDbContext db, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
+            _userManager = userManager;
+            _signInManager = signInManager;
             _movieService = movieService;
             _db = db;
         }
@@ -136,8 +144,27 @@ namespace Movie_Exercise.Controllers
         }
 
 
+        // Assuming you have a DbContext named MyDbContext and an entity named User with an Email property
+
+        [HttpPost]
+        public async Task<IActionResult> CheckEmailExists(string email)
+        {
+            // Query the UserManager for a user with the given email
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                // Email already exists in the database
+                return Json(true);
+            }
+            // Email does not exist in the database
+            return Json(false);
+        }
+
+
+        //if a customer is alrady an user so save the customer details and don't ask for the details unless the customer doesn't ask for edit.
+        //if a user but not customer 
+        // if customer but not a user 
         
 
-        
     }
 }

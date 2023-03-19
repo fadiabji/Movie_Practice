@@ -5,43 +5,30 @@
 }
 
 
-<div class="row">
+@*<div class="row">
 
     @foreach (var item in Model)
     {
         <partial name="_MoviesCards" model="item"></partial>
     }
-</div>
+</div>*@
 
 
 <div class="container">
     <div class="row mb-8 justify-content-center ">
-        <div class="col-md-6 col-12">
+        <div class="col-md-12 col-12">
             <div class="mb-4 border-bottom pb-2">
-                <h4 class="mb-0">Disposition & Amenities</h4>
+                <h4 class="mb-0">All Movies</h4>
             </div>
             <div class="row">
-                @foreach(var item in Model)
+                @foreach (var item in Model)
                 {
-                 @*   <div class="col-12">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <p class="text-dark">Guests</p>
-                            </div>
-                            <div class="input-group w-auto justify-content-end align-items-center">
-                                <input type="button" value="-" class="button-minus border rounded-circle  icon-shape icon-sm mx-1 " data-field="quantity">
-                                <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field border-0 text-center w-25">
-                                <input type="button" value="+" class="button-plus border rounded-circle icon-shape icon-sm " data-field="quantity">
-                            </div>
-                        </div>
-                    </div>*@
+                    <partial name="_MoviesCards" model="item"></partial>
                 }
-            
             </div>
         </div>
     </div>
-
-
+</div>
 
 @section Scripts {
     <script>
