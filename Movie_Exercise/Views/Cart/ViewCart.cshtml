@@ -73,11 +73,14 @@
                     <p>Fill in the data below.</p>
                     <form class="requires-validation" novalidate>
                         <div class="col-md-12">
-                            <input class="form-control" type="email" name="Email" placeholder="E-mail Address" required>
-                            <div class="valid-feedback">Email field is valid!</div>
-                            <div class="invalid-feedback">Email field cannot be blank!</div>
+                            <div class="input-group">
+                                <input class="form-control" type="email" id="email" name="email" placeholder="E-mail Address" required>
+                                <div class="valid-feedback">
+                                    Your Email is alrady exisit!
+                                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                </div>
+                            </div>
                         </div>
-
                         <div class="col-md-12">
                             <input class="form-control" type="text" name="BillingAddress" placeholder="Billing Address" required>
                             <div class="valid-feedback">Billing Address field is valid!</div>
@@ -186,5 +189,26 @@
             }
         }
 
+        //Add jQuery and the following script to your view
+        document.getElementById("email").addEventListener("keyup", checkEmail);
+        // Attach event listener to email check button
+        function checkEmail() {
+                    var email = $('#email').val();
+                    // Send AJAX request to CheckEmailExists action
+                    $.post("/Cart/CheckEmailExists/", { email: email }, function (data) {
+                        if (data) {
+                            // Email does not exist in database
+                            $('#email').removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            // Email already exists in database
+                            $('#email').removeClass('is-valid');
+                        }
+                    });
+                
+        }
+        
+
     </script>
 }
+
+
