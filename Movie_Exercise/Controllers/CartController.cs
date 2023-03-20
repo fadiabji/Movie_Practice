@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Movie_Exercise.Data;
 using Movie_Exercise.Models;
 using Movie_Exercise.Models.ViewModels;
@@ -21,8 +22,10 @@ namespace Movie_Exercise.Controllers
 
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        public CartController( IMovieService movieService, ApplicationDbContext db, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly ICustomerService _customerService;
+        public CartController(ICustomerService customerService, IMovieService movieService, ApplicationDbContext db, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
+            _customerService = customerService;
             _userManager = userManager;
             _signInManager = signInManager;
             _movieService = movieService;
@@ -151,22 +154,78 @@ namespace Movie_Exercise.Controllers
         {
             // Query the UserManager for a user with the given email
             var user = await _userManager.FindByEmailAsync(email);
-            if (user != null)
+
+            var customer = await Task.Run(()=> _customerService.GetCustomerByEmail(email));
+            if (customer != null)
             {
                 // Email already exists in the database
-                return Json(true);
+                return Json(customer);
             }
             // Email does not exist in the database
             return Json(false);
         }
 
 
-        //if a customer is alrady an user so save the customer details and don't ask for the details unless the customer doesn't ask for edit.
-        //if a user but not customer 
-        // if customer but not a user 
-        
+        // To payment method, take the customer obj from the form,
+        // if customer is alrady exisit and didn't change anything so shift to payment 
+        // if else customer is alreay exist but they change something in the details 
+        // make edit for the customer himself, then shift to payment
+        // else if cusomter donsn't exist, create a new customer then shift to payment method.
 
-        //test don't delete the branch
+        [HttpPost]
+        public async void CheckCustomer(Customer formData)
+        {
+            //var customerForm = new Customer(formData.EmailAddress, formData.FirstName, formData.LastName, formData.PhoneNumber,
+            //                                    formData.BillingAddress, formData.BillingCity, formData.BillingZip, 
+            //                                    formData.DeliveryAddress, formData.DeliveryCity, formData.DeliveryZip);
 
+            var mycusomer = await Task.Run(()=>_customerService.GetCustomerByEmail(formData.EmailAddress));
+            if (mycusomer != null)
+            {
+                if(ObjectsEqual(formData, mycusomer))
+                {
+                    // redirect to payment method with formData
+                }
+                else
+                {
+                    // redirect to edit customer methon in customer controller
+                    // make edit customer acording to last form update
+                    // save changes in customers table
+                    // redirect to paymnet method with formData
+                }
+            }
+            else
+            {
+                // redirect to create a new customer with formData
+                // don't save the customer in this point 
+                // will save customer when payment done
+
+            }
+            
+        }
+
+
+        public bool ObjectsEqual(object obj1, object obj2)
+        {
+            // Get the property names of obj1
+            var obj1Props = obj1.GetType().GetProperties();
+
+            // Check that obj2 has the same number of properties as obj1
+            if (obj1Props.Length != obj2.GetType().GetProperties().Length)
+            {
+                return false;
+            }
+
+            // Check that each property in obj1 has the same value as the corresponding property in obj2
+            foreach (var prop in obj1Props)
+            {
+                if (prop.GetValue(obj1, null) != prop.GetValue(obj2, null))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

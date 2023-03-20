@@ -5,6 +5,20 @@ namespace Movie_Exercise.Models
 {
     public class Customer
     {
+        public Customer(string emailAddress, string firstName, string lastName, int phoneNumber, string billingAddress, string billingCity, int billingZip, string deliveryAddress, string deliveryCity, int deliveryZip)
+        {
+            EmailAddress = emailAddress;
+            FirstName = firstName;
+            LastName = lastName;
+            PhoneNumber = phoneNumber;
+            BillingAddress = billingAddress;
+            BillingCity = billingCity;
+            BillingZip = billingZip;
+            DeliveryAddress = deliveryAddress;
+            DeliveryCity = deliveryCity;
+            DeliveryZip = deliveryZip;
+        }
+
         [Key]
         public int Id { get; set; }
         [Required]

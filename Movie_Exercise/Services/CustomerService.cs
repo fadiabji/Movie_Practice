@@ -44,6 +44,12 @@ namespace Movie_Exercise.Services
             _db.SaveChanges();
         }
 
+        public Customer GetCustomerByEmail(string email)
+        {
+            return  _db.Customers.FirstOrDefault(c => c.EmailAddress == email);
+        }
+       
+
         public bool IsExists(int? id)
         {
             return _db.Customers.Any(e => e.Id == id);

@@ -14,6 +14,8 @@ namespace Movie_Exercise.Services
 
         void RemoveCustomer(Customer customer);
 
+        Customer GetCustomerByEmail(string email);
+
         bool IsExists(int? id);
 
     }
