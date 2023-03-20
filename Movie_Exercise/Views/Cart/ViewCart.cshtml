@@ -71,62 +71,70 @@
                 <div class="form-items">
                     <h3>Register Today</h3>
                     <p>Fill in the data below.</p>
-                    <form class="requires-validation" novalidate>
+                    <form class="requires-validation" id="form-data" novalidate>
                         <div class="col-md-12">
-                            <div class="input-group">
-                                <input class="form-control" type="email" id="email" name="email" placeholder="E-mail Address" required>
+                                <input class="form-control" type="email" id="email" name="EmailAddress" placeholder="E-mail Address" required>
                                 <div class="valid-feedback">
-                                    Your Email is alrady exisit!
-                                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                    Your Email is alrady exisit! 
+                                    @*<a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>*@
                                 </div>
-                            </div>
                         </div>
                         <div class="col-md-12">
-                            <input class="form-control" type="text" name="BillingAddress" placeholder="Billing Address" required>
+                            <input id="customer-FirstName" class="form-control" type="text" name="FirstName" placeholder="First Name" required>
+                            <div class="valid-feedback">Billing Address field is valid!</div>
+                            <div class="invalid-feedback">Billing Address field cannot be blank!</div>
+                        </div>
+                        <div class="col-md-12">
+                            <input id="customer-LastName" class="form-control" type="text" name="LastName" placeholder="Last Name" required>
+                            <div class="valid-feedback">Billing Address field is valid!</div>
+                            <div class="invalid-feedback">Billing Address field cannot be blank!</div>
+                        </div>
+                        <div class="col-md-12">
+                            <input id="customer-BillingAddress" class="form-control" type="text" name="BillingAddress" placeholder="Billing Address" required>
                             <div class="valid-feedback">Billing Address field is valid!</div>
                             <div class="invalid-feedback">Billing Address field cannot be blank!</div>
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <input class="form-control" type="number" name="BillingZip" placeholder="Billing Zip" required>
+                            <input id="customer-BillingZip" class="form-control" type="number" name="BillingZip" placeholder="Billing Zip" required>
                             <div class="valid-feedback">Billing Zip field is valid!</div>
                             <div class="invalid-feedback">Billing Zip field cannot be blank!</div>
                         </div>
 
                         <div class="col-md-12">
-                            <input class="form-control" type="text" name="BillingCity" placeholder="Billing City" required>
+                            <input id="customer-BillingCity" class="form-control" type="text" name="BillingCity" placeholder="Billing City" required>
                             <div class="valid-feedback">Billing City field is valid!</div>
                             <div class="invalid-feedback">Billing City field cannot be blank!</div>
                         </div>
                         
                         <div class="col-md-12">
-                            <input class="form-control" type="text" name="DeliveryAddress" placeholder="Delivery Address" required>
+                            <input id="customer-DeliveryAddress" class="form-control" type="text" name="DeliveryAddress" placeholder="Delivery Address" required>
                             <div class="valid-feedback">Delivery Address field is valid!</div>
                             <div class="invalid-feedback">Delivery Address field cannot be blank!</div>
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <input class="form-control" type="number" name="DeliveryZip" placeholder="Delivery Zip" required>
+                            <input id ="customer-DeliveryZip" class="form-control" type="number" name="DeliveryZip" placeholder="Delivery Zip" required>
                             <div class="valid-feedback">Delivery Zip field is valid!</div>
                             <div class="invalid-feedback">Delivery Zip field cannot be blank!</div>
                         </div>
                         <div class="col-md-12">
-                            <input class="form-control" type="text" name="DeliveryCity" placeholder="Delivery City" required>
+                            <input id="customer-DeliveryCity" class="form-control" type="text" name="DeliveryCity" placeholder="Delivery City" required>
                             <div class="valid-feedback">Delivery City field is valid!</div>
                             <div class="invalid-feedback">Delivery City field cannot be blank!</div>
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <input class="form-control" type="tel" name="PhoneNumber" placeholder="Phone Number" required>
+                            <input id="customer-PhoneNumber" class="form-control" type="tel" name="PhoneNumber" placeholder="Phone Number" required>
                             <div class="valid-feedback">Phone Number field is valid!</div>
                             <div class="invalid-feedback">Phone Number field cannot be blank!</div>
                         </div>
                         <div class="form-button mt-3">
-                            <button id="submit" type="submit" class="btn btn-primary">Continue</button>
+                            <button onclick="CheckCustomer()" id="submit" type="submit" class="btn btn-primary">Continue</button>
                         </div>
                     </form>
                 </div>
-            </div>
+            </div>  
         </div>
     </div>
 </div>
@@ -199,6 +207,16 @@
                         if (data) {
                             // Email does not exist in database
                             $('#email').removeClass('is-invalid').addClass('is-valid');
+                            $('#customer-FirstName').val(data.firstName);
+                            $('#customer-LastName').val(data.lastName);
+                            $('#customer-BillingAddress').val(data.billingAddress); // to chang the value of the input use .val()
+                            $('#customer-BillingZip').val(data.billingZip);
+                            $('#customer-BillingCity').val(data.billingCity);
+                            $('#customer-DeliveryAddress').val(data.deliveryAddress);
+                            $('#customer-DeliveryZip').val(data.deliveryZip);
+                            $('#customer-DeliveryCity').val(data.deliveryCity);
+                            $('#customer-PhoneNumber').val(data.phoneNumber);
+
                         } else {
                             // Email already exists in database
                             $('#email').removeClass('is-valid');
@@ -206,8 +224,24 @@
                     });
                 
         }
-        
 
+        function CheckCustomer(){
+            var requestUrl = "/Cart/CheckCustomer/";
+            var formData = $("#form-data").serialize();
+            $.ajax({
+                type: "POST",
+                url: requestUrl,
+                dataType: "json",
+                cach: false,
+                data: formData,
+                 success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+            })
+        }
     </script>
 }
 
