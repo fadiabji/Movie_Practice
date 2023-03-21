@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Movie_Exercise.Data;
 using Movie_Exercise.Models;
 using Movie_Exercise.Services;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddControllersWithViews();
 
 
 
+
 // Adding sessions 
 builder.Services.AddDistributedMemoryCache();
 
@@ -35,7 +37,7 @@ builder.Services.AddSession(options =>
 
 // Adding Services Here
 builder.Services.AddTransient<IMovieService, MovieService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 

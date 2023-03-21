@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Movie_Exercise.Data;
@@ -155,7 +156,7 @@ namespace Movie_Exercise.Controllers
             // Query the UserManager for a user with the given email
             var user = await _userManager.FindByEmailAsync(email);
 
-            var customer = await Task.Run(()=> _customerService.GetCustomerByEmail(email));
+            var customer = await Task.Run(() => _customerService.GetCustomerByEmail(email));
             if (customer != null)
             {
                 // Email already exists in the database
@@ -173,16 +174,12 @@ namespace Movie_Exercise.Controllers
         // else if cusomter donsn't exist, create a new customer then shift to payment method.
 
         [HttpPost]
-        public async void CheckCustomer(Customer formData)
+        public async Task CheckCustomer(Customer formData)
         {
-            //var customerForm = new Customer(formData.EmailAddress, formData.FirstName, formData.LastName, formData.PhoneNumber,
-            //                                    formData.BillingAddress, formData.BillingCity, formData.BillingZip, 
-            //                                    formData.DeliveryAddress, formData.DeliveryCity, formData.DeliveryZip);
-
             var mycusomer = await Task.Run(()=>_customerService.GetCustomerByEmail(formData.EmailAddress));
             if (mycusomer != null)
             {
-                if(ObjectsEqual(formData, mycusomer))
+                if(AreModelsIdentical<Customer>(mycusomer, formData))
                 {
                     // redirect to payment method with formData
                 }
@@ -205,27 +202,42 @@ namespace Movie_Exercise.Controllers
         }
 
 
-        public bool ObjectsEqual(object obj1, object obj2)
+        public bool AreModelsIdentical<T>(T model1, T model2)
         {
-            // Get the property names of obj1
-            var obj1Props = obj1.GetType().GetProperties();
+            // get the properties of the model type using reflection
+            var properties = typeof(T).GetProperties();
 
-            // Check that obj2 has the same number of properties as obj1
-            if (obj1Props.Length != obj2.GetType().GetProperties().Length)
+            // compare the properties of the two models
+            foreach (var property in properties)
             {
-                return false;
-            }
-
-            // Check that each property in obj1 has the same value as the corresponding property in obj2
-            foreach (var prop in obj1Props)
-            {
-                if (prop.GetValue(obj1, null) != prop.GetValue(obj2, null))
+                if (property.Name == "Id")
                 {
+                    // ignore the Id property
+                    continue;
+                }
+                var value1 = property.GetValue(model1);
+                var value2 = property.GetValue(model2);
+
+                if (!object.Equals(value1, value2))
+                {
+                    // the two models are not identical
                     return false;
                 }
             }
 
+            // all properties are equal, the two models are identical
             return true;
         }
+
+
+
+        public bool IsPaymentDone()
+        {
+
+            return true;
+        }
+
+
+
     }
 }
