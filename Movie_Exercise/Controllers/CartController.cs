@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Movie_Exercise.Data;
@@ -23,13 +25,21 @@ namespace Movie_Exercise.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ICustomerService _customerService;
-        public CartController(ICustomerService customerService, IMovieService movieService, ApplicationDbContext db, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly IMapper _mapper;
+        
+        public CartController(ICustomerService customerService,
+                                        IMovieService movieService, 
+                                        ApplicationDbContext db, 
+                                        UserManager<AppUser> userManager, 
+                                        SignInManager<AppUser> signInManager,
+                                        IMapper mapper)
         {
             _customerService = customerService;
             _userManager = userManager;
             _signInManager = signInManager;
             _movieService = movieService;
             _db = db;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -155,7 +165,7 @@ namespace Movie_Exercise.Controllers
             // Query the UserManager for a user with the given email
             var user = await _userManager.FindByEmailAsync(email);
 
-            var customer = await Task.Run(()=> _customerService.GetCustomerByEmail(email));
+            var customer = await Task.Run(() => _customerService.GetCustomerByEmail(email));
             if (customer != null)
             {
                 // Email already exists in the database
@@ -173,59 +183,100 @@ namespace Movie_Exercise.Controllers
         // else if cusomter donsn't exist, create a new customer then shift to payment method.
 
         [HttpPost]
-        public async void CheckCustomer(Customer formData)
+        public async Task<IActionResult> CheckCustomer(Customer formData)
         {
-            //var customerForm = new Customer(formData.EmailAddress, formData.FirstName, formData.LastName, formData.PhoneNumber,
-            //                                    formData.BillingAddress, formData.BillingCity, formData.BillingZip, 
-            //                                    formData.DeliveryAddress, formData.DeliveryCity, formData.DeliveryZip);
-
             var mycusomer = await Task.Run(()=>_customerService.GetCustomerByEmail(formData.EmailAddress));
             if (mycusomer != null)
             {
-                if(ObjectsEqual(formData, mycusomer))
+                if(AreModelsIdentical<Customer>(mycusomer, formData))
                 {
                     // redirect to payment method with formData
+                    return RedirectToAction("MakePayment");
                 }
                 else
                 {
-                    // redirect to edit customer methon in customer controller
-                    // make edit customer acording to last form update
-                    // save changes in customers table
+                    // edit customer into new customer entry 
+                    mycusomer.FirstName = formData.FirstName;
+                    mycusomer.LastName = formData.LastName;
+                    mycusomer.EmailAddress = formData.EmailAddress;
+                    mycusomer.BillingAddress = formData.BillingAddress;
+                    mycusomer.BillingCity = formData.BillingCity;
+                    mycusomer.BillingZip = formData.BillingZip;
+                    mycusomer.DeliveryAddress = formData.DeliveryAddress;
+                    mycusomer.DeliveryCity = formData.DeliveryCity;
+                    mycusomer.DeliveryZip = formData.DeliveryZip;
+                    mycusomer.PhoneNumber = formData.PhoneNumber;
+                    // save changes in customers table don't save in this point untile the payment done.
+                    //_customerService.UpdateCustomer(mycusomer);
+
                     // redirect to paymnet method with formData
+                    return RedirectToAction("MakePayment");
                 }
             }
             else
             {
-                // redirect to create a new customer with formData
-                // don't save the customer in this point 
+                // create a new customer with formData
+                Customer newCustomer = new() { 
+                    FirstName = formData.FirstName,
+                    LastName = formData.LastName,
+                    BillingAddress = formData.BillingAddress,
+                    BillingCity = formData.BillingCity,
+                    BillingZip = formData.BillingZip,
+                    DeliveryAddress = formData.DeliveryAddress,
+                    DeliveryCity = formData.DeliveryCity,
+                    DeliveryZip = formData.DeliveryZip,
+                    EmailAddress = formData.EmailAddress,
+                    PhoneNumber = formData.PhoneNumber
+                };
                 // will save customer when payment done
+                     return RedirectToAction("MakePayment");
+                // don't save the customer in this point until the payment done
+                //_customerService.AddCustomer(newCustomer);
 
             }
             
         }
 
 
-        public bool ObjectsEqual(object obj1, object obj2)
+        public bool AreModelsIdentical<T>(T model1, T model2)
         {
-            // Get the property names of obj1
-            var obj1Props = obj1.GetType().GetProperties();
+            // get the properties of the model type using reflection
+            var properties = typeof(T).GetProperties();
 
-            // Check that obj2 has the same number of properties as obj1
-            if (obj1Props.Length != obj2.GetType().GetProperties().Length)
+            // compare the properties of the two models
+            foreach (var property in properties)
             {
-                return false;
-            }
-
-            // Check that each property in obj1 has the same value as the corresponding property in obj2
-            foreach (var prop in obj1Props)
-            {
-                if (prop.GetValue(obj1, null) != prop.GetValue(obj2, null))
+                if (property.Name == "Id")
                 {
+                    // ignore the Id property
+                    continue;
+                }
+                var value1 = property.GetValue(model1);
+                var value2 = property.GetValue(model2);
+
+                if (!object.Equals(value1, value2))
+                {
+                    // the two models are not identical
                     return false;
                 }
             }
 
+            // all properties are equal, the two models are identical
             return true;
         }
+
+
+        public IActionResult MakePayment()
+        {
+            return View();
+        }
+        public bool IsPaymentDone()
+        {
+
+            return true;
+        }
+
+
+
     }
 }

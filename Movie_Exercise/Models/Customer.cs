@@ -18,6 +18,8 @@ namespace Movie_Exercise.Models
             DeliveryCity = deliveryCity;
             DeliveryZip = deliveryZip;
         }
+        public Customer(){}
+
 
         [Key]
         public int Id { get; set; }

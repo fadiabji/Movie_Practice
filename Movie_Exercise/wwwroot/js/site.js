@@ -1,7 +1,6 @@
 ﻿
 // give a red circule around around the amount number that cart has.
 const element = document.getElementById("shopcount");
-console.log(element.Value)
 // Check if the element has a value
 if (element) {
     // Add a style to the element
@@ -26,7 +25,6 @@ if (element) {
                     event.preventDefault()
                     event.stopPropagation()
                 }
-
                 form.classList.add('was-validated')
             }, false)
         })

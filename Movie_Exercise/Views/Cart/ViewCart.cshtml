@@ -63,15 +63,15 @@
 
 
 
-@*form comes after checkout button clicked
-*@<div class="form-body" id="checkout-form" style="display:none;">
+@*form comes after checkout button clicked*@
+<div class="form-body" id="checkout-form" style="display:none;">
     <div class="row">
         <div class="form-holder">
             <div class="form-content">
                 <div class="form-items">
                     <h3>Register Today</h3>
                     <p>Fill in the data below.</p>
-                    <form class="requires-validation" id="form-data" novalidate>
+                    <form class="requires-validation" id="form-data"  method="POST" novalidate>
                         <div class="col-md-12">
                                 <input class="form-control" type="email" id="email" name="EmailAddress" placeholder="E-mail Address" required>
                                 <div class="valid-feedback">
@@ -130,7 +130,7 @@
                             <div class="invalid-feedback">Phone Number field cannot be blank!</div>
                         </div>
                         <div class="form-button mt-3">
-                            <button onclick="CheckCustomer()" id="submit" type="submit" class="btn btn-primary">Continue</button>
+                            <button id="submit" type="submit" class="btn btn-primary" onclick="CheckCustomer()">Continue</button>
                         </div>
                     </form>
                 </div>
@@ -138,6 +138,7 @@
         </div>
     </div>
 </div>
+
 
 
 
@@ -187,7 +188,7 @@
         }
 
 
-        // toget button to check out form
+        // Toget button to checkout form
         function toggleForm() {
             const form = document.getElementById("checkout-form");
             if (form.style.display === "none") {
@@ -196,6 +197,8 @@
                 form.style.display = "none";
             }
         }
+
+        
 
         //Add jQuery and the following script to your view
         document.getElementById("email").addEventListener("keyup", checkEmail);
@@ -225,7 +228,8 @@
                 
         }
 
-        function CheckCustomer(){
+        function CheckCustomer(e){
+            e.preventDefault();
             var requestUrl = "/Cart/CheckCustomer/";
             var formData = $("#form-data").serialize();
             $.ajax({
@@ -234,13 +238,28 @@
                 dataType: "json",
                 cach: false,
                 data: formData,
-                 success: function (response) {
-                console.log(response);
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
-            }
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
             })
+        }
+
+         function givepaymentform() {
+            
+            const paymentform = document.getElementById("payment-form");
+            if (paymentform.style.display === "none") {
+                paymentform.style.display = "block";
+                sleep(10000000);
+            } else {
+                paymentform.style.display = "none";
+            }
+         }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
     </script>
 }
