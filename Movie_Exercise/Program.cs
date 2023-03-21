@@ -1,7 +1,9 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Movie_Exercise.Data;
+using Movie_Exercise.MapperHelper;
 using Movie_Exercise.Models;
 using Movie_Exercise.Services;
 using System.Configuration;
@@ -35,11 +37,21 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+
+// to make mapper
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new MappingHelper());
+});
+var mapper = config.CreateMapper();
+
+builder.Services.AddSingleton(mapper);
+
+
 // Adding Services Here
 builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
 
 
 

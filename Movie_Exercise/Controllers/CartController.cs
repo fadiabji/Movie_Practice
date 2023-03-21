@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.Server;
@@ -24,13 +25,21 @@ namespace Movie_Exercise.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ICustomerService _customerService;
-        public CartController(ICustomerService customerService, IMovieService movieService, ApplicationDbContext db, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly IMapper _mapper;
+        
+        public CartController(ICustomerService customerService,
+                                        IMovieService movieService, 
+                                        ApplicationDbContext db, 
+                                        UserManager<AppUser> userManager, 
+                                        SignInManager<AppUser> signInManager,
+                                        IMapper mapper)
         {
             _customerService = customerService;
             _userManager = userManager;
             _signInManager = signInManager;
             _movieService = movieService;
             _db = db;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -174,7 +183,7 @@ namespace Movie_Exercise.Controllers
         // else if cusomter donsn't exist, create a new customer then shift to payment method.
 
         [HttpPost]
-        public async Task CheckCustomer(Customer formData)
+        public async Task<IActionResult> CheckCustomer(Customer formData)
         {
             var mycusomer = await Task.Run(()=>_customerService.GetCustomerByEmail(formData.EmailAddress));
             if (mycusomer != null)
@@ -182,20 +191,47 @@ namespace Movie_Exercise.Controllers
                 if(AreModelsIdentical<Customer>(mycusomer, formData))
                 {
                     // redirect to payment method with formData
+                    return RedirectToAction("MakePayment");
                 }
                 else
                 {
-                    // redirect to edit customer methon in customer controller
-                    // make edit customer acording to last form update
-                    // save changes in customers table
+                    // edit customer into new customer entry 
+                    mycusomer.FirstName = formData.FirstName;
+                    mycusomer.LastName = formData.LastName;
+                    mycusomer.EmailAddress = formData.EmailAddress;
+                    mycusomer.BillingAddress = formData.BillingAddress;
+                    mycusomer.BillingCity = formData.BillingCity;
+                    mycusomer.BillingZip = formData.BillingZip;
+                    mycusomer.DeliveryAddress = formData.DeliveryAddress;
+                    mycusomer.DeliveryCity = formData.DeliveryCity;
+                    mycusomer.DeliveryZip = formData.DeliveryZip;
+                    mycusomer.PhoneNumber = formData.PhoneNumber;
+                    // save changes in customers table don't save in this point untile the payment done.
+                    //_customerService.UpdateCustomer(mycusomer);
+
                     // redirect to paymnet method with formData
+                    return RedirectToAction("MakePayment");
                 }
             }
             else
             {
-                // redirect to create a new customer with formData
-                // don't save the customer in this point 
+                // create a new customer with formData
+                Customer newCustomer = new() { 
+                    FirstName = formData.FirstName,
+                    LastName = formData.LastName,
+                    BillingAddress = formData.BillingAddress,
+                    BillingCity = formData.BillingCity,
+                    BillingZip = formData.BillingZip,
+                    DeliveryAddress = formData.DeliveryAddress,
+                    DeliveryCity = formData.DeliveryCity,
+                    DeliveryZip = formData.DeliveryZip,
+                    EmailAddress = formData.EmailAddress,
+                    PhoneNumber = formData.PhoneNumber
+                };
                 // will save customer when payment done
+                     return RedirectToAction("MakePayment");
+                // don't save the customer in this point until the payment done
+                //_customerService.AddCustomer(newCustomer);
 
             }
             
@@ -230,7 +266,10 @@ namespace Movie_Exercise.Controllers
         }
 
 
-
+        public IActionResult MakePayment()
+        {
+            return View();
+        }
         public bool IsPaymentDone()
         {
 
