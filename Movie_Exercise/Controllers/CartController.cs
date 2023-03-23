@@ -12,6 +12,7 @@ using Movie_Exercise.Services;
 using Movie_Exercise.SessionHelpers;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 
 namespace Movie_Exercise.Controllers
 {
@@ -177,10 +178,10 @@ namespace Movie_Exercise.Controllers
 
 
         // To payment method, take the customer obj from the form,
-        // if customer is alrady exisit and didn't change anything so shift to payment 
-        // if else customer is alreay exist but they change something in the details 
-        // make edit for the customer himself, then shift to payment
-        // else if cusomter donsn't exist, create a new customer then shift to payment method.
+        // If customer is alrady exisit and didn't change anything so shift to payment 
+        // If else customer is alreay exist but they change something in the details 
+        // Make edit for the customer himself, then shift to payment
+        // Else if cusomter donsn't exist, create a new customer then shift to payment method.
 
         [HttpPost]
         public async Task<IActionResult> CheckCustomer(Customer formData)
@@ -206,11 +207,11 @@ namespace Movie_Exercise.Controllers
                     mycusomer.DeliveryCity = formData.DeliveryCity;
                     mycusomer.DeliveryZip = formData.DeliveryZip;
                     mycusomer.PhoneNumber = formData.PhoneNumber;
-                    // save changes in customers table don't save in this point untile the payment done.
-                    //_customerService.UpdateCustomer(mycusomer);
+                    //convert the object into json in order to send to the payment method
+                    string customerJson = JsonSerializer.Serialize<Customer>(mycusomer);
 
                     // redirect to paymnet method with formData
-                    return RedirectToAction("MakePayment");
+                    return RedirectToAction("MakePayment" , new { customerJson = customerJson });
                 }
             }
             else
@@ -228,8 +229,14 @@ namespace Movie_Exercise.Controllers
                     EmailAddress = formData.EmailAddress,
                     PhoneNumber = formData.PhoneNumber
                 };
+
+                //convert the object into json in order to send to the payment method
+                string customerJson = JsonSerializer.Serialize<Customer>(newCustomer);
+
+                // redirect to paymnet method with formData
+                return RedirectToAction("MakePayment", new { customerJson = customerJson });
                 // will save customer when payment done
-                     return RedirectToAction("MakePayment");
+
                 // don't save the customer in this point until the payment done
                 //_customerService.AddCustomer(newCustomer);
 
@@ -266,10 +273,36 @@ namespace Movie_Exercise.Controllers
         }
 
 
-        public IActionResult MakePayment()
+        [HttpGet]
+        public IActionResult MakePayment(string customerJson)
         {
-            return View();
+            return View(customerJson);
         }
+
+        [HttpPost]
+        public IActionResult MakePayment(string customerJson, bool IsPaymentDone)
+        {
+            if (customerJson != null)
+            {
+                Customer customer = JsonSerializer.Deserialize<Customer>(customerJson);
+                if(_customerService.GetCustomerByEmail(customer.EmailAddress) != null)
+                {
+                    _customerService.UpdateCustomer(customer);
+                    return View();
+                }
+                else
+                {
+                    _customerService.AddCustomer(customer);
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
         public bool IsPaymentDone()
         {
 
