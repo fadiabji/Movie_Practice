@@ -1,12 +1,13 @@
-﻿
+﻿@model string
+
 @{
     ViewData["Title"] = "MakePayment";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>MakePayment</h1>
 
-<div class="form-body" id="payment-form" style="display:none;">
+<div class="form-body" id="payment-form" style="display:block;">
 <div class="row">
     <div class="col-lg-4 mb-lg-0 mb-3">
         <div class="card p-3">
@@ -165,9 +166,9 @@
         </div>
     </div>
     <div class="col-12">
-        <div class="btn btn-primary payment">
-            Make Payment
-        </div>
+            <div class="btn btn-primary payment" >
+                <button asp-action="MakePayment"> Make Payment</button>
+            </div>
     </div>
 </div>
 </div>

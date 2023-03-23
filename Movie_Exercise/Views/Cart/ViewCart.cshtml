@@ -35,7 +35,6 @@
             <td>
                     <button class="button-plus border rounded-circle icon-shape icon-sm" type="button" onclick="Increment(@item.Id)">+</button>
                     <input id='@item.Id' type="number" step="1" max="10" value="@item.Quantity" name="quantity" class="quantity-field border-0 text-center w-25">
-                    
                     <button class="button-plus border rounded-circle icon-shape icon-sm" type="button" onclick="Decrement(@item.Id)">-</button>
             </td>
             <td>
@@ -61,8 +60,6 @@
     </div>
 </div>
 
-
-
 @*form comes after checkout button clicked*@
 <div class="form-body" id="checkout-form" style="display:none;">
     <div class="row">
@@ -71,7 +68,7 @@
                 <div class="form-items">
                     <h3>Register Today</h3>
                     <p>Fill in the data below.</p>
-                    <form class="requires-validation" id="form-data"  method="POST" novalidate>
+                    <form class="requires-validation" id="form-data"  method="POST" action="/Cart/CheckCustomer" novalidate>
                         <div class="col-md-12">
                                 <input class="form-control" type="email" id="email" name="EmailAddress" placeholder="E-mail Address" required>
                                 <div class="valid-feedback">
@@ -100,13 +97,11 @@
                             <div class="valid-feedback">Billing Zip field is valid!</div>
                             <div class="invalid-feedback">Billing Zip field cannot be blank!</div>
                         </div>
-
                         <div class="col-md-12">
                             <input id="customer-BillingCity" class="form-control" type="text" name="BillingCity" placeholder="Billing City" required>
                             <div class="valid-feedback">Billing City field is valid!</div>
                             <div class="invalid-feedback">Billing City field cannot be blank!</div>
                         </div>
-                        
                         <div class="col-md-12">
                             <input id="customer-DeliveryAddress" class="form-control" type="text" name="DeliveryAddress" placeholder="Delivery Address" required>
                             <div class="valid-feedback">Delivery Address field is valid!</div>
@@ -139,12 +134,6 @@
     </div>
 </div>
 
-
-
-
-
-
-
 @section Scripts {
     <script>
          function Increment(movieId) {
@@ -166,7 +155,6 @@
             })
         }
 
-
         function Decrement(movieId) {
             
             var requestUrl = "/Cart/DecrementCartItem/";
@@ -186,7 +174,6 @@
                 },
             })
         }
-
 
         // Toget button to checkout form
         function toggleForm() {
@@ -225,7 +212,6 @@
                             $('#email').removeClass('is-valid');
                         }
                     });
-                
         }
 
         function CheckCustomer(e){
