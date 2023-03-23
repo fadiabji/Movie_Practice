@@ -273,14 +273,14 @@ namespace Movie_Exercise.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult MakePayment(string customerJson)
-        {
-            return View(customerJson);
-        }
+        //[HttpGet]
+        //public IActionResult MakePayment(string customerJson)
+        //{
+        //    return View(customerJson);
+        //}
 
-        [HttpPost]
-        public IActionResult MakePayment(string customerJson, bool IsPaymentDone)
+        //[HttpPost]
+        public IActionResult MakePayment(string customerJson)
         {
             if (customerJson != null)
             {
@@ -301,6 +301,8 @@ namespace Movie_Exercise.Controllers
                 return View();
             }
         }
+
+        
 
 
         public bool IsPaymentDone()
