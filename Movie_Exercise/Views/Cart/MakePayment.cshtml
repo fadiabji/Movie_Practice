@@ -1,4 +1,5 @@
-﻿@model string
+﻿@model Movie_Exercise.Models.ViewModels.CustomerJson
+
 
 @{
     ViewData["Title"] = "MakePayment";
@@ -126,7 +127,7 @@
                             </p>
                         </div>
                         <div class="col-lg-7">
-                            <form action="" class="form">
+                                <form action="" class="form" >
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form__div">
@@ -166,13 +167,18 @@
         </div>
     </div>
     <div class="col-12">
-            <div class="btn btn-primary payment" >
-                <button asp-action="MakePayment"> Make Payment</button>
+            @*<div class="btn btn-primary payment" >
+                <a asp-controller="Cart" asp-action="MakePayment"> Make Payment</a>
             </div>
+*@
+            <form asp-controller="Cart" asp-action="MakePayment" method="post">
+                <div class="btn btn-primary payment">
+                    <button asp-controller="Cart" asp-action="MakePaymentBtn" asp-route-customerJson="@Model.CustomerStringObj"> Make Payment</button>
+                </div>
+            </form>
     </div>
 </div>
 </div>
-
 
 
 

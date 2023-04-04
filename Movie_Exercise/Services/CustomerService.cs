@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Movie_Exercise.Data;
 using Movie_Exercise.Models;
@@ -22,7 +23,7 @@ namespace Movie_Exercise.Services
 
         public async Task<Customer> GetCustomerById(int? id)
         {
-            return await Task.Run(() => _db.Customers.FirstOrDefault(c => c.Id == id));
+            return await Task.Run(() => _db.Customers.AsNoTracking().FirstOrDefault(c => c.Id == id));
         }
 
         public void AddCustomer(Customer newCustomer)
@@ -33,6 +34,7 @@ namespace Movie_Exercise.Services
 
         public void UpdateCustomer(Customer customer)
         {
+            //_db.Customers.Attach(customer);
             _db.Update(customer);
             _db.SaveChanges();
         }
@@ -46,7 +48,7 @@ namespace Movie_Exercise.Services
 
         public Customer GetCustomerByEmail(string email)
         {
-            return  _db.Customers.FirstOrDefault(c => c.EmailAddress == email);
+            return  _db.Customers.AsNoTracking().FirstOrDefault(c => c.EmailAddress == email);
         }
        
 
