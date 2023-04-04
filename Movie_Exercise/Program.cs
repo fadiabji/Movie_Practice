@@ -50,7 +50,7 @@ builder.Services.AddSingleton(mapper);
 
 // Adding Services Here
 builder.Services.AddTransient<IMovieService, MovieService>();
-builder.Services.AddTransient<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 

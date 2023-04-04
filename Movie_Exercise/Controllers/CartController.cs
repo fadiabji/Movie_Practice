@@ -191,8 +191,10 @@ namespace Movie_Exercise.Controllers
             {
                 if(AreModelsIdentical<Customer>(mycusomer, formData))
                 {
+                    string customerJson = JsonSerializer.Serialize<Customer>(mycusomer);
                     // redirect to payment method with formData
-                    return RedirectToAction("MakePayment");
+                    return RedirectToAction("MakePayment", new { customerJson = customerJson });
+
                 }
                 else
                 {
@@ -273,19 +275,21 @@ namespace Movie_Exercise.Controllers
         }
 
 
-        //[HttpGet]
-        //public IActionResult MakePayment(string customerJson)
-        //{
-        //    return View(customerJson);
-        //}
-
-        //[HttpPost]
+        [HttpGet]
         public IActionResult MakePayment(string customerJson)
+        {
+            CustomerJson customer = new (){ CustomerStringObj = customerJson };
+            //ViewBag.Customer = customerJson;
+            return View(customer);
+        }
+
+        [HttpPost]
+        public IActionResult MakePaymentBtn(string customerJson)
         {
             if (customerJson != null)
             {
                 Customer customer = JsonSerializer.Deserialize<Customer>(customerJson);
-                if(_customerService.GetCustomerByEmail(customer.EmailAddress) != null)
+                if (_customerService.GetCustomerByEmail(customer.EmailAddress) != null)
                 {
                     _customerService.UpdateCustomer(customer);
                     return View();
@@ -301,9 +305,6 @@ namespace Movie_Exercise.Controllers
                 return View();
             }
         }
-
-        
-
 
         public bool IsPaymentDone()
         {
