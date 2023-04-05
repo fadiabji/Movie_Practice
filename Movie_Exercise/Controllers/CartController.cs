@@ -27,13 +27,15 @@ namespace Movie_Exercise.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ICustomerService _customerService;
         private readonly IMapper _mapper;
+        private readonly IOrderService _orderService;
         
         public CartController(ICustomerService customerService,
                                         IMovieService movieService, 
                                         ApplicationDbContext db, 
                                         UserManager<AppUser> userManager, 
                                         SignInManager<AppUser> signInManager,
-                                        IMapper mapper)
+                                        IMapper mapper,
+                                        IOrderService orderService)
         {
             _customerService = customerService;
             _userManager = userManager;
@@ -41,6 +43,7 @@ namespace Movie_Exercise.Controllers
             _movieService = movieService;
             _db = db;
             _mapper = mapper;
+            _orderService = orderService;
         }
         public IActionResult Index()
         {
@@ -292,19 +295,37 @@ namespace Movie_Exercise.Controllers
                 if (_customerService.GetCustomerByEmail(customer.EmailAddress) != null)
                 {
                     _customerService.UpdateCustomer(customer);
+                    PlaceOrder(customer.Id);
                     return View();
                 }
                 else
                 {
                     _customerService.AddCustomer(customer);
+                    PlaceOrder(customer.Id);
                     return View();
                 }
             }
             else
             {
-                return View();
+                return RedirectToAction("ViewCart");
             }
         }
+
+        //plance and order and save to database
+        public void PlaceOrder(int customerId)
+        {
+            List<Movie> movieList = HttpContext.Session.Get<List<Movie>>(SessionKeyCart);
+            Order order = new Order();
+            order.CustomerId = customerId;
+            order.OrderRows = movieList.Select(m => new OrderRow
+            {
+                MovieId = m.Id,
+                Price = m.Price,
+            }).ToList();
+            _orderService.AddOrder(order);
+            HttpContext.Session.Remove(SessionKeyCart);
+        }
+
 
         public bool IsPaymentDone()
         {

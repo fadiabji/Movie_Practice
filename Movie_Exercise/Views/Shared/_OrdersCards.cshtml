@@ -1,0 +1,21 @@
+﻿@model Movie_Exercise.Models.Order
+
+<div class="col-md-4">
+    <div class="subCard card">
+        <div class="subCardBody card-body">
+            <h4 class="card-title"><b>@Model.OrderDate</b></h4>
+            <p class="card-text"><b>Items: </b>@Model.OrderRows.Count()</p>
+            <p class="card-text"><b>Total: </b> @Model.OrderRows.Sum(o=>o.Price)</p>
+            <p class="card-text"><b>List Of Movies: </b> 
+                @*<button type="button" onclick="toggleListOfMovies(@Model.Id)">Click Here</button>*@
+                <a style="color: red; text-decoration:auto; border-bottom: 1px solid green;" onclick="toggleListOfMovies(@Model.Id)">Click Here</a>
+                <div id="@Model.Id" style="display:none;">
+                    @foreach (var orderRow in Model.OrderRows)
+                    {
+                        <span>  "@orderRow.Movie.Title" </span>
+                    }.
+                </div>
+            </p>
+        </div>
+    </div>
+</div>

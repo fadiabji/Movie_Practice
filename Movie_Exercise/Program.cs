@@ -13,8 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseLazyLoadingProxies().UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// using lazyloding here 
+//builder.Services.AddDbContext<MovieProjectDbContext>(options =>
+//options.UseLazyLoadingProxies().UseSqlServer(
+//    builder.Configuration.GetConnectionString("MovieDatatbase")));
+
 
 // Identity things here
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -51,6 +58,7 @@ builder.Services.AddSingleton(mapper);
 // Adding Services Here
 builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 

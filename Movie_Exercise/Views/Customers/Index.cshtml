@@ -9,7 +9,11 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+
+<input class="form-control" id="myInput" type="text" placeholder="Search..">
+<br>
+
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>
@@ -37,15 +41,18 @@
                 @Html.DisplayNameFor(model => model.DeliveryCity)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.EmailAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                Orders
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="myTable">
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -73,11 +80,16 @@
                 @Html.DisplayFor(modelItem => item.DeliveryCity)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.EmailAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    <a style="color:red" asp-area="" asp-controller="Customers" asp-action="Orders" asp-route-email="@item.EmailAddress">List Of Orders</a>
+                   
             </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
@@ -87,3 +99,19 @@
 }
     </tbody>
 </table>
+
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}

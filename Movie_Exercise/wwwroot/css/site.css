@@ -32,14 +32,20 @@ body {
     margin: auto;
 }
 
+.table{
+    background-color: mintcream;
+    color:black;
+}
 .table td {
     margin: auto;
     text-align: center;
+    color:black;
 }
 
 .table tr {
     margin: auto;
     text-align: center;
+    color:black;
 }
 
 main{
@@ -227,3 +233,33 @@ html, body {
 
 
 
+.subCard {
+    border: 5px double dodgerblue;
+    text-align: center;
+    border-radius: 100px;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.subCardBody {
+    border: 5px double dodgerblue;
+    border-radius: 60px;
+    padding: 5px;
+    color: black;
+}
+
+
+
+.TitleLine {
+    border-bottom: 5px groove dodgerblue;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.LinkLine {
+    border-bottom: 5px double dodgerblue;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: white;
+    font-style: italic;
+}

@@ -11,9 +11,11 @@ namespace Movie_Exercise.Services
     {
         
         private readonly ApplicationDbContext _db;
-        public CustomerService(ApplicationDbContext db)
+        private readonly IOrderService _orderService;
+        public CustomerService(ApplicationDbContext db, IOrderService orderService )
         {
             _db = db;
+            _orderService = orderService;
         }
         
         public async Task<List<Customer>> GetAllCustomer()
@@ -51,6 +53,10 @@ namespace Movie_Exercise.Services
             return  _db.Customers.AsNoTracking().FirstOrDefault(c => c.EmailAddress == email);
         }
        
+        public List<Order> GetCustomerOrders(int customerId) 
+        {
+            return _db.Orders.Select(o => o).Where(o => o.CustomerId == customerId).ToList(); 
+        }
 
         public bool IsExists(int? id)
         {
