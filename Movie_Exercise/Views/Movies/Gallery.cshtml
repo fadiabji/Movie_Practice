@@ -20,7 +20,9 @@
             <div class="mb-4 border-bottom pb-2">
                 <h4 class="mb-0">All Movies</h4>
             </div>
-            <div class="row">
+            <input class="form-control" id="myInput" type="text" placeholder="Search..">
+            <br>
+            <div class="row" id="mycard">
                 @foreach (var item in Model)
                 {
                     <partial name="_MoviesCards" model="item"></partial>
@@ -49,6 +51,24 @@
             })
         }
 
+        // Toget button to show description of each movie
+        function toggleDescription(movieId) {
+            debugger;
+            const div = document.getElementById(movieId);
+            if (div.style.display === "none") {
+                div.style.display = "block";
+            } else {
+                div.style.display = "none";
+            }
+        }
 
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#mycard .card-div").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
     </script>
 }

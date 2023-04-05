@@ -11,10 +11,12 @@ namespace Movie_Exercise.Controllers
     {
 
         private readonly ICustomerService _customerService;
+        private readonly IOrderService _orderService;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomerService customerService,IOrderService orderService)
         {
             _customerService = customerService;
+            _orderService = orderService;
         }
         public async Task<IActionResult> Index()
         {
@@ -63,7 +65,7 @@ namespace Movie_Exercise.Controllers
                 return NotFound();
             }
 
-            var customer = await Task.Run(()=> _customerService.GetCustomerById(id));
+            var customer = await Task.Run(() => _customerService.GetCustomerById(id));
 
             if (customer == null)
             {
@@ -136,6 +138,29 @@ namespace Movie_Exercise.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+    
+        // Retrun all orders for a given customer
+        
+        public  IActionResult Orders(string email)
+        {
+            //// bring me customerId
+            int customerId = _customerService.GetCustomerByEmail(email).Id;
+            // Give me all orders for this customers
+            var listOfOrders = _orderService.GetOrderByCustomerId(customerId).ToList();
+            
+            if (listOfOrders.Any())
+            {
+                return View(listOfOrders);
+            }
+            else
+            {
+                return NotFound();
+            }
+            
+        }
+
+
 
         private bool CustomerExists(int id)
         {

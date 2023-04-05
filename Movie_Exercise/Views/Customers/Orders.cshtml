@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Movie_Exercise.Models.Order>
+
+@{
+    ViewData["Title"] = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1><span class="TitleLine">Customers Orders</span></h1>
+<br />
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <partial name="_OrdersCards" model="item"></partial>
+    }
+</div>
+
+<br />
+<h3>
+    <br /><a class="LinkLine" asp-area="" asp-controller="Customers" asp-action="Index">Go back to Index</a>
+</h3>
+
+
+@section Scripts {
+    <script>
+  // Toget button to show list of movies titles
+        function toggleListOfMovies(modelId) {
+            debugger;
+            const div = document.getElementById(modelId);
+            if (div.style.display === "none") {
+                div.style.display = "block";
+            } else {
+                div.style.display = "none";
+            }
+        }
+    </script>
+}

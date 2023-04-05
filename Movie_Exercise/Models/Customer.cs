@@ -18,8 +18,12 @@ namespace Movie_Exercise.Models
             DeliveryCity = deliveryCity;
             DeliveryZip = deliveryZip;
         }
-        public Customer(){}
+        //public Customer()
+        //{
+        //    List<Order> Orders = new List<Order>();
+        //}
 
+        public Customer(){}
 
         [Key]
         public int Id { get; set; }
@@ -58,6 +62,8 @@ namespace Movie_Exercise.Models
         //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number ex 8005551212")]
         public int PhoneNumber { get; set; }   
 
-        public virtual ICollection<Order> Orders { get; set; }
+        //public virtual ICollection<Order> Orders { get; set; }
+
+        
     }
 }

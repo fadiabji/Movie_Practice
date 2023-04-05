@@ -4,23 +4,29 @@
     <div class="card text-center" style="width: 18rem;">
         <img src="~/Images/@Model.ImageFile" class="card-img-top" alt="...">
         <div class="card-body">
-            <h5 class="card-title">@Model.Title</h5>
-            <p class="card-text">@Model.Description</p>
+            <h5 class="card-title  ">@Model.Title</h5>
+            <p class="card-text">
+                <b>Description: </b>
+                @*<button type="button" onclick="toggleListOfMovies(@Model.Id)">Click Here</button>*@
+                <a style="color: red; text-decoration:auto; border-bottom: 1px solid green;" onclick="toggleDescription(@Model.Id)">Click Here</a>
+                <div id="@Model.Id" style="display:none;">
+                    <p class="card-text">@Model.Description</p>
+                </div>
+            </p>
         </div>
         <ul class="list-group list-group-flush ">
-            <li class="list-group-item bg-white">@Model.Director</li>
-            <li class="list-group-item bg-white">@Model.ReleaseYear</li>
-            <li class="list-group-item bg-danger">@Model.Price</li>
+            <li class="list-group-item bg-info"> <b>Director: </b>@Model.Director</li>
+            <li class="list-group-item bg-info"> <b>ReleaseYear: </b>@Model.ReleaseYear</li>
+            <li class="list-group-item bg-danger"> <b>Price: </b>@Model.Price SEK</li>
         </ul>
         <div class="card-body">
-            
-                <div class="row">
+              @*  <div class="row">
                     <div class="input-group w-auto justify-content-end align-items-center">
                         <input type="button" value="-" class="button-minus border rounded-circle  icon-shape icon-sm mx-1 " data-field="quantity">
                         <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field border-0 text-center w-25">
                         <input type="button" value="+" class="button-plus border rounded-circle icon-shape icon-sm " data-field="quantity">
                     </div>
-                </div>
+                </div>*@
                 <div calss="row">
                         <button type="submit" onclick="addToCart('@Model.Id')" class="btn btn-primary">Add To Cart</button>
                 </div>
