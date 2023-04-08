@@ -6,3 +6,21 @@
     <h1 class="display-4">Welcome</h1>
     <p>Movie store is a website to sell movies, old and new movies, famous and first show movies.</p>
 </div>
+
+
+
+<!-------------------------- Most popular Movie-------------------------->
+<div class="col-md-12">
+    <h3>  MOST POPULAR MOVIE</h3>
+    <div>
+        @await Component.InvokeAsync("MostPopulareMovie")
+    </div>
+</div>
+
+<!--------------------------The 5 newest movies based on release year-------------------------->
+<div class="col-md-12">
+    <h3>  Latest MOvIES</h3>
+    <div>
+        @await Component.InvokeAsync("NewestMovies")
+    </div>
+</div>

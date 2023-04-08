@@ -26,4 +26,17 @@
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\swish-api-csharp\SwishApi\SwishApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestCert\Swish_Merchant_TestCertificate_1234679304.p12">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestCert\Swish_Merchant_TestSigningCertificate_1234679304.p12">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
