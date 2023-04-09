@@ -13,8 +13,8 @@ namespace Movie_Exercise.ViewComponents
         }
         public IViewComponentResult Invoke()
         {
-            //    // The 5 Cheapest movies based on price
-                var cheapestMovies = _db.Movies.Select(m => m).OrderBy(m => m.Price).ThenBy(m => m.Title).Take(5).ToList();
+            // The 5 Cheapest movies based on price
+            var cheapestMovies = _db.Movies.Select(m => m).OrderBy(m => m.Price).ThenBy(m => m.Title).Take(5).ToList();
             return View("Index", cheapestMovies);
         }
 
