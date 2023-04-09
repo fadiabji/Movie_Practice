@@ -1,0 +1,7 @@
+﻿@model Movie_Exercise.Models.ViewModels.TopCustomerVM
+
+<div>
+    <h1>Top Customer Name: @Model.customer.FirstName @Model.customer.LastName</h1>
+    <h1>Order Date: @Model.order.OrderDate</h1>
+    <h1>Total Price: @Model.order.OrderRows.Sum(or => or.Price)</h1>
+</div>
