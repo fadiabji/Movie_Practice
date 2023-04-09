@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Movie_Exercise.Models.Movie>;
+
+
+<div>
+    @foreach(var movie in Model)
+    {
+       <h1>@movie.Title </h1>
+       <h2>@movie.Price</h2>
+       <br />
+
+    }
+
+</div>
+

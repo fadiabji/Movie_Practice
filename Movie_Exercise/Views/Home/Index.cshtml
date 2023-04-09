@@ -24,3 +24,28 @@
         @await Component.InvokeAsync("NewestMovies")
     </div>
 </div>
+
+<!--------------------------The 5 Oldest movies based on release year-------------------------->
+<div class="col-md-12">
+    <h3>  Oldest MOvIES</h3>
+    <div>
+        @await Component.InvokeAsync("OldestMovies")
+    </div>
+</div>
+
+<!--------------------------The 5 Cheapest movies based on release year-------------------------->
+<div class="col-md-12">
+    <h3>  Cheapest MOvIES</h3>
+    <div>
+        @await Component.InvokeAsync("CheapestMovies")
+    </div>
+</div>
+
+
+<!--------------------------The Top Customer that make the most expensive order-------------------------->
+<div class="col-md-12">
+    <h3>  TopCustomer</h3>
+    <div>
+        @await Component.InvokeAsync("TopCustomer")
+    </div>
+</div>
