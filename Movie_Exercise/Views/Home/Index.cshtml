@@ -2,11 +2,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+@*<div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Movie store is a website to sell movies, old and new movies, famous and first show movies.</p>
 </div>
-
+*@
 
 
 <!-------------------------- Most popular Movie-------------------------->
@@ -16,6 +16,7 @@
         @await Component.InvokeAsync("MostPopulareMovie")
     </div>
 </div>
+<br />
 
 <!--------------------------The 5 newest movies based on release year-------------------------->
 <div class="col-md-12">
@@ -24,6 +25,7 @@
         @await Component.InvokeAsync("NewestMovies")
     </div>
 </div>
+<br />
 
 <!--------------------------The 5 Oldest movies based on release year-------------------------->
 <div class="col-md-12">
@@ -32,14 +34,16 @@
         @await Component.InvokeAsync("OldestMovies")
     </div>
 </div>
+<br />
 
 <!--------------------------The 5 Cheapest movies based on release year-------------------------->
 <div class="col-md-12">
-    <h3>  Cheapest MOvIES</h3>
+    <h3>  CHEAPEST MOVIES</h3>
     <div>
         @await Component.InvokeAsync("CheapestMovies")
     </div>
 </div>
+<br />
 
 
 <!--------------------------The Top Customer that make the most expensive order-------------------------->
@@ -49,3 +53,4 @@
         @await Component.InvokeAsync("TopCustomer")
     </div>
 </div>
+<br />
