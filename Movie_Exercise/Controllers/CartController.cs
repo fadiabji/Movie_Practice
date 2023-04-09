@@ -289,26 +289,35 @@ namespace Movie_Exercise.Controllers
         [HttpPost]
         public IActionResult MakePaymentBtn(string customerJson)
         {
-            if (customerJson != null)
+            if (HttpContext.Session.Get<List<Movie>>(SessionKeyCart) != null)
             {
-                Customer customer = JsonSerializer.Deserialize<Customer>(customerJson);
-                if (_customerService.GetCustomerByEmail(customer.EmailAddress) != null)
+                if (customerJson != null)
                 {
-                    _customerService.UpdateCustomer(customer);
-                    PlaceOrder(customer.Id);
-                    return View();
+                    Customer customer = JsonSerializer.Deserialize<Customer>(customerJson);
+                    if (_customerService.GetCustomerByEmail(customer.EmailAddress) != null)
+                    {
+                        _customerService.UpdateCustomer(customer);
+                        PlaceOrder(customer.Id);
+                        return View();
+                    }
+                    else
+                    {
+                        _customerService.AddCustomer(customer);
+                        PlaceOrder(customer.Id);
+                        return View();
+                    }
                 }
                 else
                 {
-                    _customerService.AddCustomer(customer);
-                    PlaceOrder(customer.Id);
-                    return View();
+                    return RedirectToAction("ViewCart");
                 }
+
             }
             else
             {
-                return RedirectToAction("ViewCart");
+                return RedirectToAction("Gallery", "Movies");
             }
+           
         }
 
         //plance and order and save to database
@@ -317,6 +326,7 @@ namespace Movie_Exercise.Controllers
             List<Movie> movieList = HttpContext.Session.Get<List<Movie>>(SessionKeyCart);
             Order order = new Order();
             order.CustomerId = customerId;
+
             order.OrderRows = movieList.Select(m => new OrderRow
             {
                 MovieId = m.Id,
@@ -324,6 +334,8 @@ namespace Movie_Exercise.Controllers
             }).ToList();
             _orderService.AddOrder(order);
             HttpContext.Session.Remove(SessionKeyCart);
+           
+            
         }
 
 
