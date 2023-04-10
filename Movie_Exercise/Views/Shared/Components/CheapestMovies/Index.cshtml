@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Movie_Exercise.Models.Movie>;
 
 
-<div>
+
     @foreach(var movie in Model)
     {
-        <div class="post feature-post style:height:500px;">
+        <div class="item">
             <div class="entry-header">
                 <div class="entry-thumbnail">
                     <img src="~/Images/@movie.ImageFile" class="card-img-top" style="height: 300px; width: 100%; object-fit: cover;" />
@@ -27,6 +27,5 @@
         </div>
     }
 
-</div>
 
 
