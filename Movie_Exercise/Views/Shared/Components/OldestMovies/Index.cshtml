@@ -1,14 +1,31 @@
 ﻿@model IEnumerable<Movie_Exercise.Models.Movie>;
 
 
-<div>
-    @foreach(var movie in Model)
-    {
-       <h1>@movie.Title </h1>
-       <h2>@movie.Price</h2>
-       <br />
 
-    }
+@foreach (var movie in Model)
+{
+    <div class="item">
+        <div class="entry-header">
+            <div class="entry-thumbnail">
+                <img src="~/Images/@movie.ImageFile" class="card-img-top" style="height: 300px; width: 100%; object-fit: cover;" />
+            </div>
+        </div>
+        <div class="post-content">
+            <div class="entry-meta">
+                <ul class="list-inline">
+                    <li class="publish-date"><a href="#"><i class="fa-sharp fa-solid fa-clock"></i>Release Year:@movie.ReleaseYear </a></li>&nbsp; &nbsp;
+                    <li class="views"><a href="#"><i class="fa fa-eye"></i> Price: @movie.Price SEK </a></li>&nbsp;&nbsp;
+                    <li class="views"><i class="fa fa-eye"></i> <b>Title: @movie.Title</b></li>&nbsp;&nbsp;
+                    @*<li class="loves"><a href="#"><i class="bi bi-heart bi-lg"></i>@movie.Description </a></li>*@
+                </ul>
+            </div>
+            @* <h2 class="entry-title">
+        <a asp-controller="Articles" asp-action="ContinueReading" asp-route-id="@movie.Id">
+        <span style="color:#003366"></span>@movie.Title
+        </a>
+        </h2>*@
+        </div>
+    </div>
+}
 
-</div>
 
