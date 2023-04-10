@@ -13,19 +13,21 @@
             <div class="post-content">
                 <div class="entry-meta">
                     <ul class="list-inline">
-                        <li class="publish-date"><a href="#"><i class="fa-sharp fa-solid fa-clock"></i>@movie.ReleaseYear</a></li>&nbsp; &nbsp;
-                        <li class="views"><a href="#"><i class="fa fa-eye"></i>@movie.Price </a></li>&nbsp;&nbsp;
-                        <li class="loves"><a href="#"><i class="bi bi-heart bi-lg"></i>@movie.Description </a></li>
+                        <li class="publish-date"><a href="#"><i class="fa-sharp fa-solid fa-clock"></i>Release Year:@movie.ReleaseYear </a></li>&nbsp; &nbsp;
+                        <li class="views"><a href="#"><i class="fa fa-eye"></i> Price: @movie.Price SEK </a></li>&nbsp;&nbsp;
+                        <li class="views"><i class="fa fa-eye"></i> <b>Title: @movie.Title</b></li>&nbsp;&nbsp;
+                        @*<li class="loves"><a href="#"><i class="bi bi-heart bi-lg"></i>@movie.Description </a></li>*@
                     </ul>
                 </div>
-                <h2 class="entry-title">
+               @* <h2 class="entry-title">
                     <a asp-controller="Articles" asp-action="ContinueReading" asp-route-id="@movie.Id">
                         <span style="color:#003366"></span>@movie.Title
                     </a>
-                </h2>
+                </h2>*@
             </div>
         </div>
     }
+
 
 
 
