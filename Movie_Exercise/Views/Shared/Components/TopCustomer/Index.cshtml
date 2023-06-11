@@ -1,7 +1,45 @@
 ﻿@model Movie_Exercise.Models.ViewModels.TopCustomerVM
 
-<div>
+@*<div>
     <h1>Top Customer Name: @Model.customer.FirstName @Model.customer.LastName</h1>
     <h1>Order Date: @Model.order.OrderDate</h1>
     <h1>Total Price: @Model.order.OrderRows.Sum(or => or.Price)</h1>
+</div>
+*@
+
+
+<div class="greetingscard">
+
+    <div id="outside">
+
+        <p id="outside-title">
+            <strong>Top Customer!</strong>
+        </p>
+
+        <img id="outside-pic" src="~/images/robot.png" style="height:200px; width:100px">
+
+        <p>
+            <button onclick="open_card()">let's see</button>
+        </p>
+
+    </div>
+
+    <div id="inside">
+
+        <p id="inside-title">
+            <strong>@Model.customer.FirstName @Model.customer.LastName</strong>
+        </p>
+
+        <img id="inside-pic" src="~/images/trophy.png" style="height:200px; width:150px">
+
+        <p id="message">
+            Bingoo! you bought an order of @Model.order.OrderRows.Sum(or => or.Price) SEK
+            Thank you!
+        </p>
+
+        <p>
+            <button onclick="close_card()">Click to close</button>
+        </p>
+
+    </div>
 </div>
