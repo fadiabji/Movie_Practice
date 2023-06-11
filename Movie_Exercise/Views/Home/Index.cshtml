@@ -8,14 +8,27 @@
 </div>
 *@
 
+<div class="row">
 
-<!-------------------------- Most popular Movie-------------------------->
-<div class="col-md-12">
-    <h3>  MOST POPULAR MOVIE</h3>
-    <hr style="height:5px; color:red; opacity:1">
-    <div>
-        @await Component.InvokeAsync("MostPopulareMovie")
+    <!-------------------------- Most popular Movie-------------------------->
+    <div class="col-md-6">
+        <h3>  <b>MOST POPULAR MOVIE</b></h3>
+        <hr style="height:5px; color:red; opacity:1">
+        <div>
+            @await Component.InvokeAsync("MostPopulareMovie")
+        </div>
     </div>
+
+
+    <!--------------------------The Top Customer that make the most expensive order-------------------------->
+    <div class="col-md-6">
+        <h3> <b>TOP CUSTOMER</b> </h3>
+        <hr style="height:5px; color:red; opacity:1">
+        <div>
+            @await Component.InvokeAsync("TopCustomer")
+        </div>
+    </div>
+
 </div>
 <br />
 
@@ -50,15 +63,6 @@
 <br />
 
 
-<!--------------------------The Top Customer that make the most expensive order-------------------------->
-<div class="col-md-12">
-    <h3>  TopCustomer</h3>
-    <hr style="height:5px; color:red; opacity:1">
-    <div>
-        @await Component.InvokeAsync("TopCustomer")
-    </div>
-</div>
-<br />
 
 
 
